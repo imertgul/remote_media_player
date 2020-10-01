@@ -21,6 +21,10 @@ function createWindow () {
 
 app.whenReady().then(() => {
   createWindow()
+  fs.readdir(path.join(__dirname, "./media"), function (err, dir){
+    if (err) rejects(err);
+    console.log(dir);
+  });
   
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
