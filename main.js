@@ -6,7 +6,7 @@ let mainWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    frame: false,
+    frame: true,
     fullscreen: false,
     webPreferences: {
       nodeIntegration: true, // is default value after Electron v5
@@ -16,22 +16,23 @@ function createWindow() {
     },
   });
 
-  mainWindow.loadFile("page/index.html");
+  mainWindow.loadFile("index.html");
   mainWindow.webContents.openDevTools();
 }
 
-app.whenReady().then(() => {
-  createWindow();
-}).then(()=> {
-  mainWindow.webContents.on('did-finish-load', ()=>{
-    fs.readdir(path.join(__dirname, "./page/media"), function (err, dir) {
-      if (err) rejects(err);
-      else {
-        mainWindow.webContents.send("files", dir);
-      }
-    });
+app
+  .whenReady()
+  .then(() => {
+    createWindow();
   })
-  
-});
-
+  // .then(() => {
+  //   mainWindow.webContents.on("did-finish-load", () => {
+  //     fs.readdir(path.join(__dirname, "./media"), function (err, dir) {
+  //       if (err) rejects(err);
+  //       else {
+  //         mainWindow.webContents.send("files", dir);
+  //       }
+  //     });
+  //   });
+  // });
 
