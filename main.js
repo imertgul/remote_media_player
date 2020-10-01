@@ -1,4 +1,6 @@
+const { rejects } = require('assert');
 const {app, BrowserWindow} = require('electron')
+const fs = require('fs');
 const path = require('path')
 
 function createWindow () {
@@ -11,7 +13,7 @@ function createWindow () {
     }
   })
 
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('page/index.html')
 
   mainWindow.webContents.openDevTools()
 }
