@@ -1,34 +1,37 @@
-const { rejects } = require('assert');
-const {app, BrowserWindow} = require('electron')
-const fs = require('fs');
-const path = require('path')
+const { rejects } = require("assert");
+const { app, BrowserWindow, ipcMain } = require("electron");
+const fs = require("fs");
+const path = require("path");
+let mainWindow;
 
-function createWindow () {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    frame: true,
+function createWindow() {
+  mainWindow = new BrowserWindow({
+    frame: false,
     fullscreen: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
-  })
+      nodeIntegration: true, // is default value after Electron v5
+      // contextIsolation: true, // protect against prototype pollution
+      // enableRemoteModule: false,
+      // preload: path.join(__dirname, '/page/preload.js')
+    },
+  });
 
-  mainWindow.loadFile('page/index.html')
-
-  mainWindow.webContents.openDevTools()
+  mainWindow.loadFile("page/index.html");
+  mainWindow.webContents.openDevTools();
 }
 
-
 app.whenReady().then(() => {
-  createWindow()
-  fs.readdir(path.join(__dirname, "./media"), function (err, dir){
-    if (err) rejects(err);
-    console.log(dir);
-  });
-  
-  app.on('activate', function () {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  createWindow();
+}).then(()=> {
+  mainWindow.webContents.on('did-finish-load', ()=>{
+    fs.readdir(path.join(__dirname, "./page/media"), function (err, dir) {
+      if (err) rejects(err);
+      else {
+        mainWindow.webContents.send("files", dir);
+      }
+    });
   })
-})
+  
+});
+
+
