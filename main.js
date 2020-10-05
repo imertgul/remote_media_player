@@ -6,8 +6,8 @@ let mainWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    frame: true,
-    fullscreen: false,
+    frame: false,
+    fullscreen: true,
     webPreferences: {
       nodeIntegration: true, // is default value after Electron v5
       // contextIsolation: true, // protect against prototype pollution
@@ -17,7 +17,7 @@ function createWindow() {
   });
 
   mainWindow.loadFile("index.html");
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 }
 
 app
