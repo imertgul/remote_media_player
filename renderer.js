@@ -15,9 +15,11 @@ ipcRenderer.on("files", function (event, data) {
   insertSlide(data[0]);
 });
 
-document.getElementById("start").addEventListener("click",function(e){
-  StartWatcher("media");
-},false);
+StartWatcher("media");
+
+// $('#start').on("click", function() {
+//   $('#start').text("Başladı");
+// })
 
 
 function getFileExtension(filename) {
@@ -77,19 +79,19 @@ function insertSlide(data) {
   var extension = getFileExtension(data);
   if (extension == "mp4") {
     $("#mySlide").prepend(
-      '<video style="display: none" autoplay><source src= ' +
+      '<video style="display: none" width="192" height="360" autoplay><source src= ' +
         data +
         ' type="video/mp4" /></video>'
     );
   } else if (extension == "mov") {
     $("#mySlide").prepend(
-      '<video width=" style="display: none" src=' +
+      '<video style="display: none" width="192" height="360" src=' +
         data +
         ' autoplay></video>'
     );
   } else {
     $("#mySlide").prepend(
-      '<img src=' + data + ' style="display: none; ">'
+      '<img src=' + data + ' width="192" height="360" style="display: none; ">'
     );
   }
 }
