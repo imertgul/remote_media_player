@@ -69,7 +69,7 @@ function insertSlide(data) {
   var extension = getFileExtension(data);
   if (extension == "mp4") {
     $("#mySlide").prepend(
-      '<video style="display: none" width="192" height="360" autoplay><source src= ' +
+      '<video style="display: none" width="192" height="360" autoplay loop><source src= ' +
         data +
         ' type="video/mp4" /></video>'
     );
@@ -77,7 +77,7 @@ function insertSlide(data) {
     $("#mySlide").prepend(
       '<video style="display: none" width="192" height="360" src=' +
         data +
-        ' autoplay></video>'
+        ' autoplay loop></video>'
     );
   } else {
     $("#mySlide").prepend(
