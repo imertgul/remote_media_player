@@ -1,6 +1,7 @@
 body {
-  background: #252729;
-  background-image: url('ScrollUp.png');
+  background: #000000;
+  /* background: #252729; */
+  /* background-image: url('ScrollUp.png'); */
   margin: 0 !important;
   padding: 0 !important;
 }

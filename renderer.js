@@ -10,26 +10,15 @@ var fs = require('fs');
 var nodePath = require('path');
 let $ = require('jquery');
 
-ipcRenderer.on("files", function (event, data) {
-  console.log(data);
-  insertSlide(data[0]);
-});
-
 StartWatcher("media");
 
-// $('#start').on("click", function() {
-//   $('#start').text("Başladı");
-// })
+document.getElementById('brigthnessID').addEventListener('change', (event) => {
+  setBrightness(event.target.value);
+});
 
 
-function getFileExtension(filename) {
-  return filename.split(".").pop();
-}
 
-var splitPath = function (str) {
-  return str.split('\\').pop().split('/').pop();
-}
-
+// ************** Dosya izleme ****************
 function StartWatcher(path) {
   var chokidar = require("chokidar");
 
@@ -43,7 +32,6 @@ function StartWatcher(path) {
       "From here can you check for real changes, the initial scan has been completed."
     );
   }
-
   // Declare the listeners of the watcher
   watcher
     .on("add", function (path) {
@@ -73,7 +61,9 @@ function StartWatcher(path) {
       console.log("Raw event info:", event, path, details);
     });
 }
+// ************** Dosya izleme ****************
 
+// ************** Media ****************
 function insertSlide(data) {
   document.getElementById('mySlide').innerHTML = '';
   var extension = getFileExtension(data);
@@ -95,3 +85,23 @@ function insertSlide(data) {
     );
   }
 }
+// ************** Media ****************
+
+var setBrightness = function (data) {
+  $("#mySlide").css({
+    opacity: data / 10
+  });
+}
+
+function getFileExtension(filename) {
+  return filename.split(".").pop();
+}
+
+var splitPath = function (str) {
+  return str.split('\\').pop().split('/').pop();
+}
+
+ipcRenderer.on("files", function (event, data) {
+  console.log(data);
+  insertSlide(data[0]);
+});
