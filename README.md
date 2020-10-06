@@ -1,6 +1,6 @@
-# rollscreen-medical
+# media_player
 
-Electron uygulamasıdır. Yere depolamaya kaydedilen dosyaları önizler.
+Electron uygulamasıdır. Kendi içindeki media klasörünü seyreder. 192x360 boyutunda en son eklenen medyayı gösterir
 
 ## To Use
 
