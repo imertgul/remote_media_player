@@ -16,49 +16,6 @@ document.getElementById('brigthnessID').addEventListener('change', (event) => {
   setBrightness(event.target.value);
 });
 
-// ************** Dosya izleme ****************
-function StartWatcher(path) {
-  var chokidar = require("chokidar");
-
-  var watcher = chokidar.watch(path, {
-    ignored: /[\/\\]\./,
-    persistent: true,
-  });
-
-  function onWatcherReady() {
-    console.info(
-      "From here can you check for real changes, the initial scan has been completed."
-    );
-  }
-
-  watcher
-    .on("add", function (path) {
-      console.log("File", path, "has been added");
-      insertSlide(path);
-      // insertSlide(splitPath(path))
-      // insertSlide(nodePath.basename(path))
-    })
-    .on("addDir", function (path) {
-      console.log("Directory", path, "has been added");
-    })
-    .on("change", function (path) {
-      console.log("File", path, "has been changed");
-    })
-    .on("unlink", function (path) {
-      console.log("File", path, "has been removed");
-    })
-    .on("unlinkDir", function (path) {
-      console.log("Directory", path, "has been removed");
-    })
-    .on("error", function (error) {
-      console.log("Error happened", error);
-    })
-    .on("ready", onWatcherReady)
-    .on("raw", function (event, path, details) {
-      console.log("Raw event info:", event, path, details);
-    });
-}
-// ************** Dosya izleme ****************
 
 
 
@@ -109,3 +66,48 @@ ipcRenderer.on("file", function (event, data) {
   console.log(data);
   insertSlide(data);
 });
+
+
+// ************** Dosya izleme ****************
+function StartWatcher(path) {
+  var chokidar = require("chokidar");
+
+  var watcher = chokidar.watch(path, {
+    ignored: /[\/\\]\./,
+    persistent: true,
+  });
+
+  function onWatcherReady() {
+    console.info(
+      "From here can you check for real changes, the initial scan has been completed."
+    );
+  }
+
+  watcher
+    .on("add", function (path) {
+      console.log("File", path, "has been added");
+      insertSlide(path);
+      // insertSlide(splitPath(path))
+      // insertSlide(nodePath.basename(path))
+    })
+    .on("addDir", function (path) {
+      console.log("Directory", path, "has been added");
+    })
+    .on("change", function (path) {
+      console.log("File", path, "has been changed");
+    })
+    .on("unlink", function (path) {
+      console.log("File", path, "has been removed");
+    })
+    .on("unlinkDir", function (path) {
+      console.log("Directory", path, "has been removed");
+    })
+    .on("error", function (error) {
+      console.log("Error happened", error);
+    })
+    .on("ready", onWatcherReady)
+    .on("raw", function (event, path, details) {
+      console.log("Raw event info:", event, path, details);
+    });
+}
+

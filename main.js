@@ -47,8 +47,8 @@ let mainWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    frame: false,
-    fullscreen: true,
+    frame: true,
+    fullscreen: false,
     webPreferences: {
       nodeIntegration: true, // is default value after Electron v5
       // contextIsolation: true, // protect against prototype pollution
