@@ -10,13 +10,11 @@ var fs = require('fs');
 var nodePath = require('path');
 let $ = require('jquery');
 
-StartWatcher("media");
+// StartWatcher("media");
 
 document.getElementById('brigthnessID').addEventListener('change', (event) => {
   setBrightness(event.target.value);
 });
-
-
 
 // ************** Dosya izleme ****************
 function StartWatcher(path) {
@@ -32,7 +30,7 @@ function StartWatcher(path) {
       "From here can you check for real changes, the initial scan has been completed."
     );
   }
-  // Declare the listeners of the watcher
+
   watcher
     .on("add", function (path) {
       console.log("File", path, "has been added");
@@ -57,11 +55,12 @@ function StartWatcher(path) {
     })
     .on("ready", onWatcherReady)
     .on("raw", function (event, path, details) {
-      // This event should be triggered everytime something happens.
       console.log("Raw event info:", event, path, details);
     });
 }
 // ************** Dosya izleme ****************
+
+
 
 // ************** Media ****************
 function insertSlide(data) {
@@ -69,22 +68,23 @@ function insertSlide(data) {
   var extension = getFileExtension(data);
   if (extension == "mp4") {
     $("#mySlide").prepend(
-      '<video style="display: none" width="192" height="360" autoplay loop><source src= ' +
+      '<video class="mySlides" style="display: none" width="192" height="360" autoplay loop><source src= ' +
         data +
         ' type="video/mp4" /></video>'
     );
   } else if (extension == "mov") {
     $("#mySlide").prepend(
-      '<video style="display: none" width="192" height="360" src=' +
+      '<video class="mySlides" style="display: none" width="192" height="360" src=' +
         data +
         ' autoplay loop></video>'
     );
   } else {
     $("#mySlide").prepend(
-      '<img src=' + data + ' width="192" height="360" style="display: none; ">'
-    );
+      '<img class="mySlides" src=' + data + ' width="192" height="360" style="display: none; ">'
+    )
   }
 }
+
 // ************** Media ****************
 
 var setBrightness = function (data) {
@@ -104,4 +104,8 @@ var splitPath = function (str) {
 ipcRenderer.on("files", function (event, data) {
   console.log(data);
   insertSlide(data[0]);
+});
+ipcRenderer.on("file", function (event, data) {
+  console.log(data);
+  insertSlide(data);
 });
