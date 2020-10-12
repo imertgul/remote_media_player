@@ -76,8 +76,7 @@ service.post("/upload/:filename", function (req, res) {
   });
   req.on("end", function () {
     console.log("Tamamlandi...");
-    MyPlayer.add(new Media(filename, 5));
-    // mainWindow.webContents.send("file", filename);
+    MyPlayer.add(new Media(filename, 5000));
     res.sendStatus(200);
   });
 });
@@ -90,8 +89,20 @@ service.post("/brightness", function (req, res) {
 
 service.post("/play", function (req, res) {
   res.end("success");
-  MyPlayer.start(mainWindow);
+  MyPlayer.play=!MyPlayer.play
+  console.log("Play set: "+MyPlayer.play);
+  if (MyPlayer.play) {
+    MyPlayer.start(mainWindow, 0);
+  } 
 });
+
+service.post("/loop", function (req, res) {
+  res.end("success");
+  console.log("Loop set: "+req.body.val);
+  MyPlayer.loop=!MyPlayer.loop
+});
+
+
 
 function Media(myFileName, myLength) {
   this.id = Math.random().toString(36).slice(2);
@@ -115,24 +126,14 @@ function Player() {
     this.array[this.count] = object;
     this.count++;
   };
-  this.start =function (mainWindow) {
-    let index = 0;
-    this.play = true;
-    while (this.play) {
-      console.log(
-        "index: " + index + " Count: " + this.count + " loop: " + this.loop
-      );
-      timer(this.array[index].duration)
-      this.array[index].play(mainWindow);
-      if (this.loop && index == this.count - 1) index = 0;
-      else if (!this.loop && index == this.count - 1) this.play = false;
-      else if (index <= this.count - 1) index++;
-    }
+  this.start =function (mainWindow, from) {
+    if (!this.play) return 0;
+    let index = from;
+    console.log("index: " + index + " Count: " + this.count + " Loop: " + this.loop+ " Play: " + this.play);
+    this.array[index].play(mainWindow);
+    if (this.loop && index == this.count - 1) setTimeout(()=>this.start(mainWindow, 0), this.array[index].duration);
+    else if (!this.loop && index == this.count - 1)  this.play = false;
+    else if (this.play && index < this.count - 1) setTimeout(()=>this.start(mainWindow, ++index), this.array[index].duration);
+    return 0;  
   };
 }
-
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}   
