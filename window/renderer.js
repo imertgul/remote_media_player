@@ -35,8 +35,6 @@ function insertSlide(data) {
   }
 }
 
-// ************** Media ****************
-
 var setBrightness = function (data) {
   $("#mySlide").css({
     opacity: data / 10
@@ -47,9 +45,10 @@ function getFileExtension(filename) {
   return filename.split(".").pop();
 }
 
-var splitPath = function (str) {
-  return str.split('\\').pop().split('/').pop();
-}
+
+// ***********************************
+// ************** ipc ****************
+// ***********************************
 
 ipcRenderer.on("file", function (event, data) {
   console.log(data);

@@ -27,39 +27,38 @@
       <option value="9">90%</option>
       <option selected value="10">100%</option>
     </select>
+    <button id="playButton">Play</button>
   </body>
   <script>
     // let $ = require("jquery");
 
-    var target = "http://192.168.88.33:3000" ;
+    var target = "http://192.168.88.33:3000";
     // var target = "http://127.0.0.1";
 
     document
       .getElementById("brigthnessID")
       .addEventListener("change", (event) => {
         var temp = event.target.value;
-        $.post(target+"/brightness/",{brightness: temp}, function(data){
-            if(data==='success') {
-                console.log("Başarılı");
-              }
-          });
-        // $.ajax({
-        //   type: "POST",
-        //   url: target+"/brightness/",
-        //   data: temp,
-        //   processData: false,
-        //   contentType: false,
-        // });
+        $.post(target + "/brightness/", { brightness: temp }, function (data) {
+          if (data === "success") {
+            console.log("Parlaklık Başarılı");
+          }
+        });
       });
 
+    $("#playButton").on("click", (e) => {
+      $.post(target + "/play/", { message: "Play" }, function (data) {
+          if (data === "success") {
+            console.log("Play Başarılı");
+          }
+        });
+    });
     $("#insertSlide").on("click", (e) => {
       const selectedFile = document.getElementById("media").files[0];
 
-
-
       $.ajax({
         type: "POST",
-        url: target+"/upload/"+ selectedFile.name,
+        url: target + "/upload/" + selectedFile.name,
         data: selectedFile,
         processData: false,
         contentType: false,
