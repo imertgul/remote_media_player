@@ -54,6 +54,7 @@ ipcRenderer.on("file", function (event, data) {
   console.log(data);
   insertSlide(data);
 });
+
 ipcRenderer.on("brightness", function (event, data) {
   setBrightness(data);
 });

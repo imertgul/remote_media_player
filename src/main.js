@@ -67,7 +67,7 @@ service.use(express.json());
 
 service.post("/upload/:filename", function (req, res) {
   var filename = path.basename(req.params.filename);
-  filename = path.resolve("app/media", filename);
+  filename = path.resolve("app/media", filename.replace(/\s/g, ''));
   var dst = fs.createWriteStream(filename);
   req.pipe(dst);
   dst.on("drain", function () {
@@ -75,7 +75,7 @@ service.post("/upload/:filename", function (req, res) {
     req.resume();
   });
   req.on("end", function () {
-    console.log("Tamamlandi...");
+    console.log("Tamamlandi... "+ filename);
     MyPlayer.add(new Media(filename, 5000));
     res.sendStatus(200);
   });
