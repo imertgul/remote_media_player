@@ -23,7 +23,7 @@ function createWindow() {
     },
   });
 
-  mainWindow.loadFile("../window/window.html");
+  mainWindow.loadFile("../app/window.html");
   mainWindow.webContents.openDevTools();
 }
 
@@ -67,7 +67,7 @@ service.use(express.json());
 
 service.post("/upload/:filename", function (req, res) {
   var filename = path.basename(req.params.filename);
-  filename = path.resolve("window/media", filename);
+  filename = path.resolve("app/media", filename);
   var dst = fs.createWriteStream(filename);
   req.pipe(dst);
   dst.on("drain", function () {
