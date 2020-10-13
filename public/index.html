@@ -45,7 +45,14 @@
       <br />
       <button id="playButton">Play Toggle</button>
       <button id="loopButton">Loop Toggle</button>
-      
+      <br />
+      <br />
+      <br />
+      <label for="widthID">Width:</label>
+      <input type="text" id="widthID" /><br /><br />
+      <label for="heightID">Height:</label>
+      <input type="text" id="heightID"/><br /><br />
+      <button id="sizeButton">set ScreenSize</button>
     </center>
   </body>
   <script>
@@ -87,6 +94,15 @@
           loop = !loop;
           console.log("Play Başarılı");
         }
+      });
+    });
+    $("#sizeButton").on("click", (e) => {
+      let screen = {
+        width : $("#widthID").val(),
+        height:  $("#heightID").val()
+      }
+      $.post(target + "/screenSize/", screen, function (data) {
+      
       });
     });
 

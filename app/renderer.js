@@ -9,6 +9,7 @@ const { ipcRenderer, dialog } = electron;
 var fs = require('fs');
 var nodePath = require('path');
 let $ = require('jquery');
+var screen = { height: 360, width: 192}
 
 // StartWatcher("media");
 
@@ -18,19 +19,19 @@ function insertSlide(data) {
   var extension = getFileExtension(data);
   if (extension == "mp4") {
     $("#mySlide").prepend(
-      '<video class="mySlides" style="display: none" width="192" height="360" autoplay loop><source src= ' +
+      '<video class="mySlides" style="display: none" width=' + screen.width + ' height=' + screen.height + ' autoplay loop><source src= ' +
         data +
         ' type="video/mp4" /></video>'
     );
   } else if (extension == "mov") {
     $("#mySlide").prepend(
-      '<video class="mySlides" style="display: none" width="192" height="360" src=' +
+      '<video class="mySlides" style="display: none" width=' + screen.width + ' height=' + screen.height + ' src=' +
         data +
         ' autoplay loop></video>'
     );
   } else {
     $("#mySlide").prepend(
-      '<img class="mySlides" src=' + data + ' width="192" height="360" style="display: none; ">'
+      '<img class="mySlides" src=' + data + ' width=' + screen.width + ' height=' + screen.height + ' style="display: none; ">'
     )
   }
 }
@@ -51,11 +52,15 @@ function getFileExtension(filename) {
 // ***********************************
 
 ipcRenderer.on("file", function (event, data) {
-  console.log(data);
   insertSlide(data);
 });
 
 ipcRenderer.on("brightness", function (event, data) {
   setBrightness(data);
+});
+
+ipcRenderer.on("screenSize", function (event, data) {
+  screen.width = data.width;
+  screen.height = data.height;
 });
 

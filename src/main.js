@@ -83,12 +83,12 @@ service.post("/upload/:filename", function (req, res) {
 
 service.post("/brightness", function (req, res) {
   mainWindow.webContents.send("brightness", req.body.brightness);
-  res.end("success");
+  res.sendStatus(200);
   console.log(MyPlayer);
 });
 
 service.post("/play", function (req, res) {
-  res.end("success");
+  res.sendStatus(200);
   MyPlayer.play=!MyPlayer.play
   console.log("Play set: "+MyPlayer.play);
   if (MyPlayer.play) {
@@ -97,7 +97,7 @@ service.post("/play", function (req, res) {
 });
 
 service.post("/loop", function (req, res) {
-  res.end("success");
+  res.sendStatus(200);
   console.log("Loop set: "+req.body.val);
   MyPlayer.loop=!MyPlayer.loop
 });
@@ -105,8 +105,14 @@ service.post("/loop", function (req, res) {
 service.post("/init", function (req, res) {
   console.log("PlayerName: "+req.body.playerName);
   res.end(JSON.stringify(MyPlayer));
+  res.sendStatus(200);
 });
 
+service.post("/screenSize", function (req, res) {
+  console.log("Screen size set: "+req.body.width+ " x "+ req.body.height);
+  mainWindow.webContents.send("screenSize", {width: req.body.width, height: req.body.height});
+  res.sendStatus(200);
+});
 
 
 function Media(myFileName, myLength) {
