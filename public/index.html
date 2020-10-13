@@ -5,38 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Test sayfası</title>
     <script src="jquery-3.5.1.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <input
-      type="file"
-      id="media"
-      name="media"
-      accept="image/png, image/jpeg, video/mp4"
-    />
-    <button id="insertSlide">Görseli gönder</button>
-    <select id="brigthnessID">
-      <option value="0">0%</option>
-      <option value="1">10%</option>
-      <option value="2">20%</option>
-      <option value="3">30%</option>
-      <option value="4">40%</option>
-      <option value="5">50%</option>
-      <option value="6">60%</option>
-      <option value="7">70%</option>
-      <option value="8">80%</option>
-      <option value="9">90%</option>
-      <option selected value="10">100%</option>
-    </select>
-    <button id="playButton">Play Toggle</button>
-    <input type="checkbox" id="playSwitch" /><label for="switch">Toggle</label>
-    <input type="checkbox" id="loopSwitch" /><label for="switch">Toggle</label>
-    <button id="loopButton">Loop Toggle</button>
+    <center>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <input
+        type="file"
+        id="media"
+        name="media"
+        accept="image/png, image/jpeg, video/mp4"
+      />
+      <button id="insertSlide">Görseli gönder</button>
+      <br />
+      <br />
+      <br />
+      <select id="brigthnessID">
+        <option value="0">0%</option>
+        <option value="1">10%</option>
+        <option value="2">20%</option>
+        <option value="3">30%</option>
+        <option value="4">40%</option>
+        <option value="5">50%</option>
+        <option value="6">60%</option>
+        <option value="7">70%</option>
+        <option value="8">80%</option>
+        <option value="9">90%</option>
+        <option selected value="10">100%</option>
+      </select>
+      <br />
+      <br />
+      <br />
+      <button id="playButton">Play Toggle</button>
+      <button id="loopButton">Loop Toggle</button>
+      
+    </center>
   </body>
   <script>
     var target = "http://192.168.88.33:3000";
     // var target = "http://127.0.0.1";
-    
+
     var play = false;
     var loop = true;
     document
@@ -54,16 +67,15 @@
       $.post(target + "/play/", { val: play }, function (data) {
         if (data === "success") {
           play = !play;
-          $('playSwitch').checkhed = !play;
           console.log("Play Başarılı");
         }
       });
     });
+
     $("#loopButton").on("click", (e) => {
       $.post(target + "/loop/", { val: loop }, function (data) {
         if (data === "success") {
           loop = !loop;
-          $('loopSwitch').checkhed = !loop;
           console.log("Play Başarılı");
         }
       });
