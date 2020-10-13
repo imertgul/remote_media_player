@@ -102,6 +102,11 @@ service.post("/loop", function (req, res) {
   MyPlayer.loop=!MyPlayer.loop
 });
 
+service.post("/init", function (req, res) {
+  console.log("PlayerName: "+req.body.playerName);
+  res.end(JSON.stringify(MyPlayer));
+});
+
 
 
 function Media(myFileName, myLength) {
@@ -121,19 +126,19 @@ function Player() {
   this.count = 0;
   this.play = false;
   this.loop = false;
-  this.array = [];
+  this.playList = [];
   this.add = function (object) {
-    this.array[this.count] = object;
+    this.playList[this.count] = object;
     this.count++;
   };
   this.start =function (mainWindow, from) {
     if (!this.play) return 0;
     let index = from;
     console.log("index: " + index + " Count: " + this.count + " Loop: " + this.loop+ " Play: " + this.play);
-    this.array[index].play(mainWindow);
-    if (this.loop && index == this.count - 1) setTimeout(()=>this.start(mainWindow, 0), this.array[index].duration);
+    this.playList[index].play(mainWindow);
+    if (this.loop && index == this.count - 1) setTimeout(()=>this.start(mainWindow, 0), this.playList[index].duration);
     else if (!this.loop && index == this.count - 1)  this.play = false;
-    else if (this.play && index < this.count - 1) setTimeout(()=>this.start(mainWindow, ++index), this.array[index].duration);
+    else if (this.play && index < this.count - 1) setTimeout(()=>this.start(mainWindow, ++index), this.playList[index].duration);
     return 0;  
   };
 }

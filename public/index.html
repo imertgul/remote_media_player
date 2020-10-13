@@ -12,6 +12,8 @@
       <br />
       <br />
       <br />
+      <button id="initButton">init</button>
+      <p id="label">Player info</p>
       <br />
       <br />
       <br />
@@ -62,6 +64,13 @@
           }
         });
       });
+
+    $("#initButton").on("click", (e) => {
+      $.post(target + "/init/", { playerName: "TestUi" }, function (data) {
+        console.log(data);
+        document.getElementById("label").innerHTML = data;
+      });
+    });
 
     $("#playButton").on("click", (e) => {
       $.post(target + "/play/", { val: play }, function (data) {
