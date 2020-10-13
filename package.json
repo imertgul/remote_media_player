@@ -4,7 +4,7 @@
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron src/main.js"
   },
   "author": "GitHub",
   "license": "CC0-1.0",
@@ -15,6 +15,7 @@
     "chokidar": "^3.4.2",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
-    "jquery": "^3.5.1"
+    "jquery": "^3.5.1",
+    "timer": "^1.0.1"
   }
 }
