@@ -2,7 +2,7 @@ const { rejects } = require("assert");
 const { app, BrowserWindow, ipcMain } = require("electron");
 const { response } = require("express");
 const fs = require("fs");
-var timer = require("timer")
+var timer = require("timer");
 var express = require("express"),
   path = require("path"),
   service = express();
@@ -67,7 +67,7 @@ service.use(express.json());
 
 service.post("/upload/:filename", function (req, res) {
   var filename = path.basename(req.params.filename);
-  filename = path.resolve("app/media", filename.replace(/\s/g, ''));
+  filename = path.resolve("app/media", filename.replace(/\s/g, ""));
   var dst = fs.createWriteStream(filename);
   req.pipe(dst);
   dst.on("drain", function () {
@@ -75,7 +75,7 @@ service.post("/upload/:filename", function (req, res) {
     req.resume();
   });
   req.on("end", function () {
-    console.log("Tamamlandi... "+ filename);
+    console.log("Tamamlandi... " + filename);
     MyPlayer.add(new Media(filename, 5000));
     res.sendStatus(200);
   });
@@ -89,31 +89,41 @@ service.post("/brightness", function (req, res) {
 
 service.post("/play", function (req, res) {
   res.sendStatus(200);
-  MyPlayer.play=!MyPlayer.play
-  console.log("Play set: "+MyPlayer.play);
+  MyPlayer.play = !MyPlayer.play;
+  console.log("Play set: " + MyPlayer.play);
   if (MyPlayer.play) {
     MyPlayer.start(mainWindow, 0);
-  } 
+  }
 });
 
 service.post("/loop", function (req, res) {
   res.sendStatus(200);
-  console.log("Loop set: "+req.body.val);
-  MyPlayer.loop=!MyPlayer.loop
+  console.log("Loop set: " + req.body.val);
+  MyPlayer.loop = !MyPlayer.loop;
 });
 
 service.post("/init", function (req, res) {
-  console.log("PlayerName: "+req.body.playerName);
+  console.log("PlayerName: " + req.body.playerName);
   res.end(JSON.stringify(MyPlayer));
+  // res.sendStatus(200);
+});
+service.post("/deleteMedia", function (req, res) {
+  console.log("Deleted: " + req.body.id);
+  // console.log(indexOfID(req.body.id, MyPlayer.playList));
+  MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
+  MyPlayer.count--;
+  //TODO issue#3
   res.sendStatus(200);
 });
 
 service.post("/screenSize", function (req, res) {
-  console.log("Screen size set: "+req.body.width+ " x "+ req.body.height);
-  mainWindow.webContents.send("screenSize", {width: req.body.width, height: req.body.height});
+  console.log("Screen size set: " + req.body.width + " x " + req.body.height);
+  mainWindow.webContents.send("screenSize", {
+    width: req.body.width,
+    height: req.body.height,
+  });
   res.sendStatus(200);
 });
-
 
 function Media(myFileName, myLength) {
   this.id = Math.random().toString(36).slice(2);
@@ -137,14 +147,29 @@ function Player() {
     this.playList[this.count] = object;
     this.count++;
   };
-  this.start =function (mainWindow, from) {
+  this.start = function (mainWindow, from) {
     if (!this.play) return 0;
     let index = from;
-    console.log("index: " + index + " Count: " + this.count + " Loop: " + this.loop+ " Play: " + this.play);
-    this.playList[index].play(mainWindow);
-    if (this.loop && index == this.count - 1) setTimeout(()=>this.start(mainWindow, 0), this.playList[index].duration);
-    else if (!this.loop && index == this.count - 1)  this.play = false;
-    else if (this.play && index < this.count - 1) setTimeout(()=>this.start(mainWindow, ++index), this.playList[index].duration);
-    return 0;  
+    console.log( "index: " + index + " Count: " + this.count + " Loop: " + this.loop + " Play: " + this.play);
+    if(index < this.count) this.playList[index].play(mainWindow);
+    if (this.loop && index == this.count - 1)  setTimeout(() => this.start(mainWindow, 0), this.playList[index].duration);
+    else if (!this.loop && index == this.count - 1) this.play = false;
+    else if (this.play && index < this.count - 1) setTimeout(() => this.start(mainWindow, ++index), this.playList[index].duration);
+    return 0;
   };
+}
+
+var indexOfID = function (id, arr) {
+  for (let i = 0; i < arr.length; i++) {
+    if (id == arr[i].id) {
+      return i;
+    }
+  }
+  return null;
+};
+
+function arrayRemove(arr, value) {
+  return arr.filter(function (ele) {
+    return ele.id != value;
+  });
 }

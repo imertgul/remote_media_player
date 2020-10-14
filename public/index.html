@@ -53,6 +53,12 @@
       <label for="heightID">Height:</label>
       <input type="text" id="heightID"/><br /><br />
       <button id="sizeButton">set ScreenSize</button>
+      <br />
+      <br />
+      <br />
+      <label for="mediaID">Media ID:</label>
+      <input type="text" id="mediaID"/><br /><br />
+      <button id="deleteButton">Delete Media</button>
     </center>
   </body>
   <script>
@@ -103,6 +109,12 @@
       }
       $.post(target + "/screenSize/", screen, function (data) {
       
+      });
+    });
+
+    $("#deleteButton").on("click", (e) => {
+      $.post(target + "/deleteMedia/", {id: $("#mediaID").val()}, function (data) {
+        
       });
     });
 
