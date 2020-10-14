@@ -72,9 +72,7 @@
       .addEventListener("change", (event) => {
         var temp = event.target.value;
         $.post(target + "/brightness/", { brightness: temp }, function (data) {
-          if (data === "success") {
-            console.log("Parlaklık Başarılı");
-          }
+          console.log("Parlaklık Başarılı");
         });
       });
 
@@ -87,21 +85,18 @@
 
     $("#playButton").on("click", (e) => {
       $.post(target + "/play/", { val: play }, function (data) {
-        if (data === "success") {
-          play = !play;
-          console.log("Play Başarılı");
-        }
+        play = !play;
+        console.log("Play Başarılı");
       });
     });
 
     $("#loopButton").on("click", (e) => {
       $.post(target + "/loop/", { val: loop }, function (data) {
-        if (data === "success") {
-          loop = !loop;
-          console.log("Play Başarılı");
-        }
+        loop = !loop;
+        console.log("loop Başarılı");
       });
     });
+
     $("#sizeButton").on("click", (e) => {
       let screen = {
         width : $("#widthID").val(),
