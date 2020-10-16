@@ -16,15 +16,15 @@ let mainWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    frame: true,
-    fullscreen: false,
+    frame: false,
+    fullscreen: true,
     webPreferences: {
       nodeIntegration: true,
     },
   });
 
   mainWindow.loadFile("../app/window.html");
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
