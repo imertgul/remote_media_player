@@ -107,13 +107,13 @@ service.post("/init", function (req, res) {
   res.end(JSON.stringify(MyPlayer));
   // res.sendStatus(200);
 });
+
 service.post("/deleteMedia", function (req, res) {
   console.log("Deleted: " + req.body.id);
-  // console.log(indexOfID(req.body.id, MyPlayer.playList));
   MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
   MyPlayer.count--;
   //TODO issue#3
-  res.sendStatus(200);
+  res.end(JSON.stringify(MyPlayer));
 });
 
 service.post("/screenSize", function (req, res) {
@@ -123,6 +123,12 @@ service.post("/screenSize", function (req, res) {
     height: req.body.height,
   });
   res.sendStatus(200);
+});
+
+service.post("/updateDuration", function (req, res) {
+  console.log("Updated duration: " + req.body.duration + " for: " + req.body.id);
+  MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].duration = req.body.duration;
+  res.end(JSON.stringify(MyPlayer));
 });
 
 function Media(myFileName, myLength) {
