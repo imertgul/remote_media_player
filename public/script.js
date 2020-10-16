@@ -1,5 +1,9 @@
-var target = "http://192.168.88.33:3000";
-// var target = "http://127.0.0.1";
+//var target = "http://192.168.88.33:3000";
+var target = "http://127.0.0.1:3000";
+
+$("#setIpButton").on("click", () => {
+  target = $("#ipID").val();
+});
 
 var play = false;
 var loop = false;
