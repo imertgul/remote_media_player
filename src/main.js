@@ -83,9 +83,12 @@ service.post("/upload/:filename", function (req, res) {
 });
 
 service.post("/brightness", function (req, res) {
-  mainWindow.webContents.send("brightness", req.body.brightness);
-  res.sendStatus(200);
-  console.log(MyPlayer);
+  if(req.body.brightness>10 && req.body.brightness<0) res.sendStatus(400)
+  else{
+    MyPlayer.brightness = req.body.brightness;
+    mainWindow.webContents.send("brightness", MyPlayer.brightness);
+    res.end(JSON.stringify(MyPlayer));
+  }
 });
 
 service.post("/play", function (req, res) {
@@ -166,6 +169,7 @@ function Player() {
   this.count = 0;
   this.play = false;
   this.loop = false;
+  this.brightness = 10;
   this.playList = [];
   this.add = function (object) {
     this.playList[this.count] = object;
