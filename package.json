@@ -1,7 +1,7 @@
 {
-  "name": "media_player",
+  "name": "remote_media_player",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "Remote Media Player that can be controlled over the network. Project includes three directory. ",
   "main": "main.js",
   "scripts": {
     "start": "electron src/main.js"
