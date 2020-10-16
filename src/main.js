@@ -83,8 +83,8 @@ service.post("/upload/:filename", function (req, res) {
 });
 
 service.post("/brightness", function (req, res) {
-  if(req.body.brightness>10 && req.body.brightness<0) res.sendStatus(400)
-  else{
+  if (req.body.brightness > 10 && req.body.brightness < 0) res.sendStatus(400);
+  else {
     MyPlayer.brightness = req.body.brightness;
     mainWindow.webContents.send("brightness", MyPlayer.brightness);
     res.end(JSON.stringify(MyPlayer));
@@ -124,8 +124,11 @@ service.post("/deleteMedia", function (req, res) {
 });
 
 service.post("/updateDuration", function (req, res) {
-  console.log("Updated duration: " + req.body.duration + " for: " + req.body.id);
-  MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].duration = req.body.duration;
+  console.log(
+    "Updated duration: " + req.body.duration + " for: " + req.body.id
+  );
+  MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].duration =
+    req.body.duration;
   res.end(JSON.stringify(MyPlayer));
 });
 
@@ -146,8 +149,8 @@ service.post("/playFrom", function (req, res) {
 });
 
 service.post("/screenSize", function (req, res) {
-  if (req.body.height<0 && req.body.width<0 ) res.sendStatus(400);
-  else{
+  if (req.body.height < 0 && req.body.width < 0) res.sendStatus(400);
+  else {
     console.log("Screen size set: " + req.body.width + " x " + req.body.height);
     MyPlayer.screenSize = req.body;
     mainWindow.webContents.send("screenSize", req.body);
@@ -173,7 +176,7 @@ function Player() {
   this.play = false;
   this.loop = false;
   this.brightness = 10;
-  this.screenSize = {height: 360, width: 192};
+  this.screenSize = { height: 360, width: 192 };
   this.playList = [];
   this.add = function (object) {
     this.playList[this.count] = object;
@@ -182,18 +185,26 @@ function Player() {
   this.start = function (mainWindow, from) {
     if (!this.play) return 0;
     let index = from;
-    console.log( "index: " + index + " Count: " + this.count + " Loop: " + this.loop + " Play: " + this.play);
-    if(index < this.count) this.playList[index].play(mainWindow);
-    if (this.loop && index == this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, 0), this.playList[index].duration);
+    console.log("index: " + index + " Count: " + this.count + " Loop: " + this.loop + " Play: " + this.play);
+    if (index < this.count) this.playList[index].play(mainWindow);
+    if (this.loop && index == this.count - 1)
+      timeOut = setTimeout(
+        () => this.start(mainWindow, 0),
+        this.playList[index].duration
+      );
     else if (!this.loop && index == this.count - 1) this.play = false;
-    else if (this.play && index < this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, ++index), this.playList[index].duration);
+    else if (this.play && index < this.count - 1)
+      timeOut = setTimeout(
+        () => this.start(mainWindow, ++index),
+        this.playList[index].duration
+      );
     return 0;
   };
-  this.stop = function(){
+  this.stop = function () {
     this.play = false;
     global.clearTimeout(timeOut);
     console.log("Player Halted");
-  }
+  };
 }
 
 var indexOfID = function (id, arr) {
@@ -210,4 +221,3 @@ function arrayRemove(arr, value) {
     return ele.id != value;
   });
 }
-
