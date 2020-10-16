@@ -58,7 +58,11 @@
       <br />
       <label for="mediaID">Media ID:</label>
       <input type="text" id="mediaID"/><br /><br />
+      <input type="text" id="mediaID"/>
+      <label for="durationID">Duration :</label>
+      <input type="text" id="durationID"/><br /><br />
       <button id="deleteButton">Delete Media</button>
+      <button id="updateDurationButton">Update Duration</button>
     </center>
   </body>
   <script>
@@ -110,6 +114,12 @@
     $("#deleteButton").on("click", (e) => {
       $.post(target + "/deleteMedia/", {id: $("#mediaID").val()}, function (data) {
         
+      });
+    });
+
+    $("#updateDurationButton").on("click", (e) => {
+      $.post(target + "/updateDuration/", {id: $("#mediaID").val(), duration: $("#durationID").val()}, function (data) {
+        document.getElementById("label").innerHTML = data;
       });
     });
 
