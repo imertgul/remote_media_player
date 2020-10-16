@@ -7,6 +7,7 @@ document.getElementById("brigthnessID").addEventListener("change", (event) => {
   var temp = event.target.value;
   $.post(target + "/brightness/", { brightness: temp }, function (data) {
     console.log("Parlaklık Başarılı");
+    document.getElementById("label").innerHTML = data;
   });
 });
 
@@ -21,6 +22,7 @@ $("#playButton").on("click", (e) => {
   $.post(target + "/play/", { val: play }, function (data) {
     play = !play;
     console.log("Play Başarılı");
+    document.getElementById("label").innerHTML = data;
   });
 });
 
@@ -28,6 +30,7 @@ $("#loopButton").on("click", (e) => {
   $.post(target + "/loop/", { val: loop }, function (data) {
     loop = !loop;
     console.log("loop Başarılı");
+    document.getElementById("label").innerHTML = data;
   });
 });
 
@@ -36,12 +39,15 @@ $("#sizeButton").on("click", (e) => {
     width: $("#widthID").val(),
     height: $("#heightID").val(),
   };
-  $.post(target + "/screenSize/", screen, function (data) {});
+  $.post(target + "/screenSize/", screen, function (data) {
+    document.getElementById("label").innerHTML = data;
+  });
 });
 
 $("#deleteButton").on("click", (e) => {
-  $.post(target + "/deleteMedia/", { id: $("#mediaID").val() }, 
-  function (data) {
+  $.post(target + "/deleteMedia/", { id: $("#mediaID").val() }, function (
+    data
+  ) {
     document.getElementById("label").innerHTML = data;
   });
 });
@@ -66,13 +72,9 @@ $("#updateListButton").on("click", (e) => {
   );
 });
 $("#playFromButton").on("click", (e) => {
-  $.post(
-    target + "/playFrom/",
-    { val: $("#fromID").val() },
-    function (data) {
-      document.getElementById("label").innerHTML = data;
-    }
-  );
+  $.post(target + "/playFrom/", { val: $("#fromID").val() }, function (data) {
+    document.getElementById("label").innerHTML = data;
+  });
 });
 
 $("#insertSlide").on("click", (e) => {
@@ -84,5 +86,7 @@ $("#insertSlide").on("click", (e) => {
     data: selectedFile,
     processData: false,
     contentType: false,
+  }).done(function (data) {
+    document.getElementById("label").innerHTML = data;
   });
 });

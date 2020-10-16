@@ -78,7 +78,7 @@ service.post("/upload/:filename", function (req, res) {
   req.on("end", function () {
     console.log("Tamamlandi... " + filename);
     MyPlayer.add(new Media(filename, 5000));
-    res.sendStatus(200);
+    res.end(JSON.stringify(MyPlayer));
   });
 });
 
@@ -89,24 +89,23 @@ service.post("/brightness", function (req, res) {
 });
 
 service.post("/play", function (req, res) {
-  res.sendStatus(200);
   MyPlayer.play = !MyPlayer.play;
   console.log("Play set: " + MyPlayer.play);
   if (MyPlayer.play) {
     MyPlayer.start(mainWindow, 0);
   }
+  res.end(JSON.stringify(MyPlayer));
 });
 
 service.post("/loop", function (req, res) {
-  res.sendStatus(200);
   console.log("Loop set: " + req.body.val);
   MyPlayer.loop = !MyPlayer.loop;
+  res.end(JSON.stringify(MyPlayer));
 });
 
 service.post("/init", function (req, res) {
   console.log("PlayerName: " + req.body.playerName);
   res.end(JSON.stringify(MyPlayer));
-  // res.sendStatus(200);
 });
 
 service.post("/deleteMedia", function (req, res) {
@@ -117,15 +116,6 @@ service.post("/deleteMedia", function (req, res) {
   MyPlayer.play = true;
   MyPlayer.start(mainWindow, 0);
   res.end(JSON.stringify(MyPlayer));
-});
-
-service.post("/screenSize", function (req, res) {
-  console.log("Screen size set: " + req.body.width + " x " + req.body.height);
-  mainWindow.webContents.send("screenSize", {
-    width: req.body.width,
-    height: req.body.height,
-  });
-  res.sendStatus(200);
 });
 
 service.post("/updateDuration", function (req, res) {
@@ -148,6 +138,15 @@ service.post("/playFrom", function (req, res) {
   MyPlayer.start(mainWindow, req.body.val);
   res.end(JSON.stringify(MyPlayer));
   console.log("Player starts from: " + req.body.val);
+});
+
+service.post("/screenSize", function (req, res) {
+  console.log("Screen size set: " + req.body.width + " x " + req.body.height);
+  mainWindow.webContents.send("screenSize", {
+    width: req.body.width,
+    height: req.body.height,
+  });
+  res.end(JSON.stringify(MyPlayer));
 });
 
 function Media(myFileName, myLength) {
