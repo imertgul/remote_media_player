@@ -117,9 +117,11 @@ service.post("/deleteMedia", function (req, res) {
   MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
   MyPlayer.count--;
   console.log("Deleted: " + req.body.id);
-  MyPlayer.stop();
-  MyPlayer.play = true;
-  MyPlayer.start(mainWindow, 0);
+  if (MyPlayer.play == true) {
+    MyPlayer.stop();
+    MyPlayer.play = true;
+    MyPlayer.start(mainWindow, 0);
+  }
   res.end(JSON.stringify(MyPlayer));
 });
 
