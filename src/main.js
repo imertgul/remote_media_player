@@ -109,9 +109,9 @@ service.post("/init", function (req, res) {
 });
 
 service.post("/deleteMedia", function (req, res) {
-  console.log("Deleted: " + req.body.id);
   MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
   MyPlayer.count--;
+  console.log("Deleted: " + req.body.id);
   //TODO issue#3
   res.end(JSON.stringify(MyPlayer));
 });
@@ -128,6 +128,14 @@ service.post("/screenSize", function (req, res) {
 service.post("/updateDuration", function (req, res) {
   console.log("Updated duration: " + req.body.duration + " for: " + req.body.id);
   MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].duration = req.body.duration;
+  res.end(JSON.stringify(MyPlayer));
+});
+
+service.post("/updateList", function (req, res) {
+  console.log("Updated List for: " + req.body.id + " toIndex: " + req.body.to);
+  var temp = MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)];//from bul
+  MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
+  MyPlayer.playList.splice(req.body.to - 1, 0, temp);
   res.end(JSON.stringify(MyPlayer));
 });
 
