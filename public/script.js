@@ -65,6 +65,15 @@ $("#updateListButton").on("click", (e) => {
     }
   );
 });
+$("#playFromButton").on("click", (e) => {
+  $.post(
+    target + "/playFrom/",
+    { val: $("#fromID").val() },
+    function (data) {
+      document.getElementById("label").innerHTML = data;
+    }
+  );
+});
 
 $("#insertSlide").on("click", (e) => {
   const selectedFile = document.getElementById("media").files[0];
