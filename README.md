@@ -1,6 +1,8 @@
 # Remote Media Player
 
-Remote Media Player that can be controlled over the network. Project includes three directory. 
+Remote Media Player that can be controlled over the network. Electron app displays the media. You can communicate with API as shown below or use Test UI that will be run automatically.
+
+Project includes three directory. 
 
  - src
 	 - node.js app that runs the API's, Electron app and Test UI for control the media
