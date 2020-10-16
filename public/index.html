@@ -9,6 +9,7 @@
   </head>
   <body>
     <center>
+      <button id="theme">Client Theme</button>  
       <br />
       <br />
       <br />
@@ -16,7 +17,7 @@
       <p id="label">Player info</p>
       <br />
       <br />
-      <hr>
+      <hr />
       <br />
       <br />
       <input
@@ -28,7 +29,7 @@
       <button id="insertSlide">Görseli gönder</button>
       <br />
       <br />
-      <hr>
+      <hr />
       <br />
       <br />
       <select id="brigthnessID">
@@ -46,102 +47,38 @@
       </select>
       <br />
       <br />
-      <hr>
+      <hr />
       <br />
       <br />
       <button id="playButton">Play Toggle</button>
       <button id="loopButton">Loop Toggle</button>
       <br />
       <br />
-      <hr>
+      <hr />
       <br />
       <br />
       <label for="widthID">Width:</label>
       <input type="text" id="widthID" /><br /><br />
       <label for="heightID">Height:</label>
-      <input type="text" id="heightID"/><br /><br />
+      <input type="text" id="heightID" /><br /><br />
       <button id="sizeButton">set ScreenSize</button>
       <br />
       <br />
-      <hr>
+      <hr />
       <br />
       <br />
       <label for="mediaID">Media ID:</label>
-      <input type="text" id="mediaID"/>
+      <input type="text" id="mediaID" />
       <label for="durationID">Duration :</label>
-      <input type="text" id="durationID"/><br /><br />
+      <input type="text" id="durationID" /><br /><br />
       <button id="deleteButton">Delete Media</button>
       <button id="updateDurationButton">Update Duration</button>
     </center>
   </body>
   <script>
-    var target = "http://192.168.88.33:3000";
-    // var target = "http://127.0.0.1";
-
-    var play = false;
-    var loop = true;
-    document
-      .getElementById("brigthnessID")
-      .addEventListener("change", (event) => {
-        var temp = event.target.value;
-        $.post(target + "/brightness/", { brightness: temp }, function (data) {
-          console.log("Parlaklık Başarılı");
-        });
-      });
-
-    $("#initButton").on("click", (e) => {
-      $.post(target + "/init/", { playerName: "TestUi" }, function (data) {
-        console.log(data);
-        document.getElementById("label").innerHTML = data;
-      });
-    });
-
-    $("#playButton").on("click", (e) => {
-      $.post(target + "/play/", { val: play }, function (data) {
-        play = !play;
-        console.log("Play Başarılı");
-      });
-    });
-
-    $("#loopButton").on("click", (e) => {
-      $.post(target + "/loop/", { val: loop }, function (data) {
-        loop = !loop;
-        console.log("loop Başarılı");
-      });
-    });
-
-    $("#sizeButton").on("click", (e) => {
-      let screen = {
-        width : $("#widthID").val(),
-        height:  $("#heightID").val()
-      }
-      $.post(target + "/screenSize/", screen, function (data) {
-      
-      });
-    });
-
-    $("#deleteButton").on("click", (e) => {
-      $.post(target + "/deleteMedia/", {id: $("#mediaID").val()}, function (data) {
-        
-      });
-    });
-
-    $("#updateDurationButton").on("click", (e) => {
-      $.post(target + "/updateDuration/", {id: $("#mediaID").val(), duration: $("#durationID").val()}, function (data) {
-        document.getElementById("label").innerHTML = data;
-      });
-    });
-
-    $("#insertSlide").on("click", (e) => {
-      const selectedFile = document.getElementById("media").files[0];
-
-      $.ajax({
-        type: "POST",
-        url: target + "/upload/" + selectedFile.name,
-        data: selectedFile,
-        processData: false,
-        contentType: false,
-      });
+    $("#theme").on("click", () => {
+      document.documentElement.classList.toggle("dark-mode");
     });
   </script>
+  <script src="script.js"></script>
 </html>
