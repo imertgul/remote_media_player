@@ -48,6 +48,7 @@ app.whenReady().then(() => {
 //***************************************************************//
 
 let MyPlayer = new Player();
+var timeOut;
 
 service.set("port", process.env.PORT || 3000);
 service.use(express.static("public"));
@@ -142,11 +143,11 @@ service.post("/updateList", function (req, res) {
 });
 
 service.post("/playFrom", function (req, res) {
-  console.log("Player starts from: " + req.body.val);
   MyPlayer.stop();
   MyPlayer.play = true;
   MyPlayer.start(mainWindow, req.body.val);
   res.end(JSON.stringify(MyPlayer));
+  console.log("Player starts from: " + req.body.val);
 });
 
 function Media(myFileName, myLength) {
@@ -166,7 +167,6 @@ function Player() {
   this.count = 0;
   this.play = false;
   this.loop = false;
-  this.timeOut;
   this.playList = [];
   this.add = function (object) {
     this.playList[this.count] = object;
@@ -183,8 +183,8 @@ function Player() {
     return 0;
   };
   this.stop = function(){
-    clearTimeout(this.timeOut);
     this.play = false;
+    global.clearTimeout(timeOut);
     console.log("Player Halted");
   }
 }
