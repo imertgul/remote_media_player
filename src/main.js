@@ -126,28 +126,40 @@ service.post("/deleteMedia", function (req, res) {
 });
 
 service.post("/updateDuration", function (req, res) {
-  console.log(
-    "Updated duration: " + req.body.duration + " for: " + req.body.id
-  );
-  MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].duration =
-    req.body.duration;
-  res.end(JSON.stringify(MyPlayer));
+  if (req.body.duration >0) {
+    console.log(
+      "Updated duration: " + req.body.duration + " for: " + req.body.id
+    );
+    MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].duration =
+      req.body.duration;
+    res.end(JSON.stringify(MyPlayer));
+  }
+  else
+    res.sendStatus(400);
 });
 
 service.post("/updateList", function (req, res) {
-  console.log("Updated List for: " + req.body.id + " toIndex: " + req.body.to);
-  var temp = MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)];
-  MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
-  MyPlayer.playList.splice(req.body.to - 1, 0, temp);
-  res.end(JSON.stringify(MyPlayer));
+  if (req.body.to >= 0 && req.body.to < MyPlayer.playList.length) {
+    console.log("Updated List for: " + req.body.id + " toIndex: " + req.body.to);
+    var temp = MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)];
+    MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
+    MyPlayer.playList.splice(req.body.to, 0, temp);
+    res.end(JSON.stringify(MyPlayer));
+  }
+  else
+    res.sendStatus(400);
 });
 
 service.post("/playFrom", function (req, res) {
-  MyPlayer.stop();
-  MyPlayer.play = true;
-  MyPlayer.start(mainWindow, req.body.val);
-  res.end(JSON.stringify(MyPlayer));
-  console.log("Player starts from: " + req.body.val);
+  if (req.body.val >= 0 && req.body.val < MyPlayer.playList.length) {
+    MyPlayer.stop();
+    MyPlayer.play = true;
+    MyPlayer.start(mainWindow, req.body.val);
+    res.end(JSON.stringify(MyPlayer));
+    console.log("Player starts from: " + req.body.val);
+  }
+  else
+    res.sendStatus(400);
 });
 
 service.post("/screenSize", function (req, res) {
@@ -164,7 +176,6 @@ function Media(myFileName, myLength) {
   this.id = Math.random().toString(36).slice(2);
   this.fileName = myFileName;
   this.duration = myLength;
-
   this.print = function () {
     console.log(this.id + "  " + this.fileName + " " + this.duration);
   };
@@ -189,17 +200,9 @@ function Player() {
     let index = from;
     console.log("index: " + index + " Count: " + this.count + " Loop: " + this.loop + " Play: " + this.play);
     if (index < this.count) this.playList[index].play(mainWindow);
-    if (this.loop && index == this.count - 1)
-      timeOut = setTimeout(
-        () => this.start(mainWindow, 0),
-        this.playList[index].duration
-      );
+    if (this.loop && index == this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, 0), this.playList[index].duration);
     else if (!this.loop && index == this.count - 1) this.play = false;
-    else if (this.play && index < this.count - 1)
-      timeOut = setTimeout(
-        () => this.start(mainWindow, ++index),
-        this.playList[index].duration
-      );
+    else if (this.play && index < this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, ++index),this.playList[index].duration);
     return 0;
   };
   this.stop = function () {
