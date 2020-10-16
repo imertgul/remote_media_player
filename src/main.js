@@ -135,9 +135,17 @@ service.post("/updateDuration", function (req, res) {
 
 service.post("/updateList", function (req, res) {
   console.log("Updated List for: " + req.body.id + " toIndex: " + req.body.to);
-  var temp = MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)];//from bul
+  var temp = MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)];
   MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
   MyPlayer.playList.splice(req.body.to - 1, 0, temp);
+  res.end(JSON.stringify(MyPlayer));
+});
+
+service.post("/playFrom", function (req, res) {
+  console.log("Player starts from: " + req.body.val);
+  MyPlayer.stop();
+  MyPlayer.play = true;
+  MyPlayer.start(mainWindow, req.body.val);
   res.end(JSON.stringify(MyPlayer));
 });
 
