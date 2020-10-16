@@ -1,5 +1,5 @@
 html{
-    background-color:blanchedalmond;
+    background-color: rgb(183, 210, 240);
 }
 .dark-mode {
     filter: invert(1) hue-rotate(180deg);
