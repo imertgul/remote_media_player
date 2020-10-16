@@ -144,12 +144,13 @@ service.post("/playFrom", function (req, res) {
 });
 
 service.post("/screenSize", function (req, res) {
-  console.log("Screen size set: " + req.body.width + " x " + req.body.height);
-  mainWindow.webContents.send("screenSize", {
-    width: req.body.width,
-    height: req.body.height,
-  });
-  res.end(JSON.stringify(MyPlayer));
+  if (req.body.height<0 && req.body.width<0 ) res.sendStatus(400);
+  else{
+    console.log("Screen size set: " + req.body.width + " x " + req.body.height);
+    MyPlayer.screenSize = req.body;
+    mainWindow.webContents.send("screenSize", req.body);
+    res.end(JSON.stringify(MyPlayer));
+  }
 });
 
 function Media(myFileName, myLength) {
@@ -170,6 +171,7 @@ function Player() {
   this.play = false;
   this.loop = false;
   this.brightness = 10;
+  this.screenSize = {height: 360, width: 192};
   this.playList = [];
   this.add = function (object) {
     this.playList[this.count] = object;
