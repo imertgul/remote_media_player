@@ -112,7 +112,9 @@ service.post("/deleteMedia", function (req, res) {
   MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
   MyPlayer.count--;
   console.log("Deleted: " + req.body.id);
-  //TODO issue#3
+  MyPlayer.stop();
+  MyPlayer.play = true;
+  MyPlayer.start(mainWindow, 0);
   res.end(JSON.stringify(MyPlayer));
 });
 
@@ -156,6 +158,7 @@ function Player() {
   this.count = 0;
   this.play = false;
   this.loop = false;
+  this.timeOut;
   this.playList = [];
   this.add = function (object) {
     this.playList[this.count] = object;
@@ -166,11 +169,16 @@ function Player() {
     let index = from;
     console.log( "index: " + index + " Count: " + this.count + " Loop: " + this.loop + " Play: " + this.play);
     if(index < this.count) this.playList[index].play(mainWindow);
-    if (this.loop && index == this.count - 1)  setTimeout(() => this.start(mainWindow, 0), this.playList[index].duration);
+    if (this.loop && index == this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, 0), this.playList[index].duration);
     else if (!this.loop && index == this.count - 1) this.play = false;
-    else if (this.play && index < this.count - 1) setTimeout(() => this.start(mainWindow, ++index), this.playList[index].duration);
+    else if (this.play && index < this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, ++index), this.playList[index].duration);
     return 0;
   };
+  this.stop = function(){
+    clearTimeout(this.timeOut);
+    this.play = false;
+    console.log("Player Halted");
+  }
 }
 
 var indexOfID = function (id, arr) {
@@ -187,3 +195,4 @@ function arrayRemove(arr, value) {
     return ele.id != value;
   });
 }
+
