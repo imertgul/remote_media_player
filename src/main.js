@@ -50,17 +50,17 @@ app.whenReady().then(() => {
 let MyPlayer = new Player();
 var timeOut;
 
-require('dns').lookup(require('os').hostname(), function (err, add, fam) {
-  console.log('My ip address: '+add);
-})
-
 service.set("port", process.env.PORT || 3000);
 service.use(express.static("public"));
 service.listen(service.get("port"), function (err) {
   if (err) {
     console.log(err);
   } else {
-    console.log("Running on port: " + service.get("port"));
+    // console.log("Running on port: " + service.get("port"));
+    require('dns').lookup(require('os').hostname(), function (err, add, fam) {
+      console.log('Connect test UI: http://'+add+':'+service.get("port"));
+      console.log('Your target on Test UI must be: http://'+add+':'+service.get("port"));
+    })
   }
 });
 service.use(
