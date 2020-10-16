@@ -2,7 +2,7 @@ var target = "http://192.168.88.33:3000";
 // var target = "http://127.0.0.1";
 
 var play = false;
-var loop = true;
+var loop = false;
 document.getElementById("brigthnessID").addEventListener("change", (event) => {
   var temp = event.target.value;
   $.post(target + "/brightness/", { brightness: temp }, function (data) {
@@ -19,18 +19,20 @@ $("#initButton").on("click", (e) => {
 });
 
 $("#playButton").on("click", (e) => {
-  $.post(target + "/play/", { val: play }, function (data) {
-    play = !play;
-    console.log("Play Başarılı");
+  $.post(target + "/play/", { val: !play }, function (data) {
     document.getElementById("label").innerHTML = data;
+    data = JSON.parse(data);
+    play = data.play;
+    console.log("Play set "+ play);
   });
 });
 
 $("#loopButton").on("click", (e) => {
-  $.post(target + "/loop/", { val: loop }, function (data) {
-    loop = !loop;
-    console.log("loop Başarılı");
+  $.post(target + "/loop/", { val: !loop }, function (data) {
     document.getElementById("label").innerHTML = data;
+    data = JSON.parse(data);
+    loop = data.loop;
+    console.log("Loop set "+ play);
   });
 });
 

@@ -92,6 +92,7 @@ service.post("/brightness", function (req, res) {
 });
 
 service.post("/play", function (req, res) {
+  //Warning, res.body.val just a toggle signal
   MyPlayer.play = !MyPlayer.play;
   console.log("Play set: " + MyPlayer.play);
   if (MyPlayer.play) {
@@ -101,8 +102,9 @@ service.post("/play", function (req, res) {
 });
 
 service.post("/loop", function (req, res) {
-  console.log("Loop set: " + req.body.val);
+  //Warning, res.body.val just a toggle signal
   MyPlayer.loop = !MyPlayer.loop;
+  console.log("Loop set: " + MyPlayer.loop);
   res.end(JSON.stringify(MyPlayer));
 });
 
