@@ -78,7 +78,7 @@ $("#updateListButton").on("click", (e) => {
   );
 });
 $("#playFromButton").on("click", (e) => {
-  $.post(target + "/playFrom/", { val: $("#fromID").val() }, function (data) {
+  $.post(target + "/playFrom/", { index: $("#fromID").val() }, function (data) {
     document.getElementById("label").innerHTML = data;
   });
 });

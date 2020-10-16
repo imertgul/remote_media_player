@@ -155,12 +155,12 @@ service.post("/updateList", function (req, res) {
 });
 
 service.post("/playFrom", function (req, res) {
-  if (req.body.val >= 0 && req.body.val < MyPlayer.playList.length) {
+  if (req.body.index >= 0 && req.body.index < MyPlayer.playList.length) {
     MyPlayer.stop();
     MyPlayer.play = true;
-    MyPlayer.start(mainWindow, req.body.val);
+    MyPlayer.start(mainWindow, req.body.index);
     res.end(JSON.stringify(MyPlayer));
-    console.log("Player starts from: " + req.body.val);
+    console.log("Player starts from: " + req.body.index);
   }
   else
     res.sendStatus(400);
