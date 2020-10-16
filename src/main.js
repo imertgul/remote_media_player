@@ -50,6 +50,10 @@ app.whenReady().then(() => {
 let MyPlayer = new Player();
 var timeOut;
 
+require('dns').lookup(require('os').hostname(), function (err, add, fam) {
+  console.log('My ip address: '+add);
+})
+
 service.set("port", process.env.PORT || 3000);
 service.use(express.static("public"));
 service.listen(service.get("port"), function (err) {
