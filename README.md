@@ -31,7 +31,7 @@ There will be an output  in console:
       Your target on Test UI must be: http://192.168.88.33:3000
 
 You should be in same network to use test UI. Also You have to set target ip as noted.
-To use in same device please disable CORS. No need to set. Default is localhost already.
+To use in same device please disable CORS. No need to set target ip(Default is localhost already).
 
 ## Refererenses
 
@@ -47,7 +47,6 @@ To use in same device please disable CORS. No need to set. Default is localhost 
 | /updateList | playerName: string | res: Player |
 | /updateDuration | playerName: string | res: Player |
 | /screenSize | playerName: string | res: Player |
-| /init | playerName: string | res: Player |
 
 ## Object
 
