@@ -1,8 +1,8 @@
 const { rejects } = require("assert");
 const { app, BrowserWindow, ipcMain } = require("electron");
+const { getVideoDurationInSeconds } = require('get-video-duration');
 const { response } = require("express");
 const fs = require("fs");
-var timer = require("timer");
 var express = require("express"),
   path = require("path"),
   service = express();
@@ -81,7 +81,15 @@ service.post("/upload/:filename", function (req, res) {
   });
   req.on("end", function () {
     console.log("Tamamlandi... " + filename);
-    MyPlayer.add(new Media(filename, 5000));
+    var extension = getFileExtension(filename);
+    if (extension == "mp4" || extension == "mov") {
+      getVideoDurationInSeconds(filename).then((duration) => {
+        console.log(duration)     
+        MyPlayer.add(new Media(filename, duration*1000));
+      })
+    }
+    else
+      MyPlayer.add(new Media(filename, 5000));
     res.end(JSON.stringify(MyPlayer));
   });
 });
@@ -229,4 +237,8 @@ function arrayRemove(arr, value) {
   return arr.filter(function (ele) {
     return ele.id != value;
   });
+}
+
+function getFileExtension(filename) {
+  return filename.split(".").pop();
 }

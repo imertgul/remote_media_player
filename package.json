@@ -15,7 +15,7 @@
     "chokidar": "^3.4.2",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
-    "jquery": "^3.5.1",
-    "timer": "^1.0.1"
+    "get-video-duration": "^3.0.2",
+    "jquery": "^3.5.1"
   }
 }
