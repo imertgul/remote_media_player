@@ -200,6 +200,7 @@ function Player() {
   this.count = 0;
   this.play = false;
   this.loop = false;
+  this.playingIndex = 0;
   this.brightness = 10;
   this.screenSize = { height: 360, width: 192 };
   this.playList = [];
@@ -209,12 +210,12 @@ function Player() {
   };
   this.start = function (mainWindow, from) {
     if (!this.play) return 0;
-    let index = from;
-    console.log("index: " + index + " Count: " + this.count + " Loop: " + this.loop + " Play: " + this.play);
-    if (index < this.count) this.playList[index].play(mainWindow);
-    if (this.loop && index == this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, 0), this.playList[index].duration);
-    else if (!this.loop && index == this.count - 1) this.play = false;
-    else if (this.play && index < this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, ++index),this.playList[index].duration);
+    this.playingIndex = from;
+    console.log("index: " + playingIndex + " Count: " + this.count + " Loop: " + this.loop + " Play: " + this.play);
+    if (playingIndex < this.count) this.playList[playingIndex].play(mainWindow);
+    if (this.loop && playingIndex == this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, 0), this.playList[playingIndex].duration);
+    else if (!this.loop && playingIndex == this.count - 1) this.play = false;
+    else if (this.play && playingIndex < this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, ++playingIndex),this.playList[playingIndex].duration);
     return 0;
   };
   this.stop = function () {
