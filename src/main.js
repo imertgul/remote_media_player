@@ -1,7 +1,5 @@
-const { rejects } = require("assert");
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow } = require("electron");
 const { getVideoDurationInSeconds } = require('get-video-duration');
-const { response } = require("express");
 const fs = require("fs");
 var express = require("express"),
   path = require("path"),
@@ -211,11 +209,11 @@ function Player() {
   this.start = function (mainWindow, from) {
     if (!this.play) return 0;
     this.playingIndex = from;
-    console.log("index: " + playingIndex + " Count: " + this.count + " Loop: " + this.loop + " Play: " + this.play);
-    if (playingIndex < this.count) this.playList[playingIndex].play(mainWindow);
-    if (this.loop && playingIndex == this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, 0), this.playList[playingIndex].duration);
-    else if (!this.loop && playingIndex == this.count - 1) this.play = false;
-    else if (this.play && playingIndex < this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, ++playingIndex),this.playList[playingIndex].duration);
+    console.log("index: " + this.playingIndex + " Count: " + this.count + " Loop: " + this.loop + " Play: " + this.play);
+    if (this.playingIndex < this.count) this.playList[this.playingIndex].play(mainWindow);
+    if (this.loop && this.playingIndex == this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, 0), this.playList[this.playingIndex].duration);
+    else if (!this.loop && this.playingIndex == this.count - 1) this.play = false;
+    else if (this.play && this.playingIndex < this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, ++this.playingIndex),this.playList[this.playingIndex].duration);
     return 0;
   };
   this.stop = function () {
