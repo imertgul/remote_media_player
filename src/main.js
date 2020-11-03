@@ -27,17 +27,26 @@ function createWindow() {
 
 app.whenReady().then(() => {
   createWindow();
+}).then(() => {
+  mainWindow.webContents.on("did-finish-load", () => {
+    fs.readdir(path.join(__dirname, "../app/media"), function (err, dir) {
+      if (err) console.log(err);
+      else {
+        // mainWindow.webContents.send("files", dir);
+        console.log("Yerel depolamadan eklene dosyalar: " + dir);
+        for (let index = 0; index < dir.length; index++) {
+          var extension = getFileExtension(dir[index]);
+          let temp = path.join(__dirname, "../app/media/") + dir[index];
+          if (extension == "mp4" || extension == "mov") {
+            getVideoDurationInSeconds(temp).then((duration) => {
+              MyPlayer.add(new Media(temp, duration * 1000));
+            });
+          } else MyPlayer.add(new Media(temp, 5000));
+        }
+      }
+    });
+  });
 });
-// .then(() => {
-//   mainWindow.webContents.on("did-finish-load", () => {
-//     fs.readdir(path.join(__dirname, "./media"), function (err, dir) {
-//       if (err) rejects(err);
-//       else {
-//         mainWindow.webContents.send("files", dir);
-//       }
-//     });
-//   });
-// });
 
 //***************************************************************//
 //***************************************************************//
