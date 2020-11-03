@@ -11,6 +11,7 @@ var express = require("express"),
 //***************************************************************//
 //***************************************************************//
 let mainWindow;
+let defaultDuration = 1000
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -33,7 +34,7 @@ app.whenReady().then(() => {
       if (err) console.log(err);
       else {
         // mainWindow.webContents.send("files", dir);
-        console.log("Yerel depolamadan eklene dosyalar: " + dir);
+        console.log("Files found in local: " + dir);
         for (let index = 0; index < dir.length; index++) {
           var extension = getFileExtension(dir[index]);
           let temp = path.join(__dirname, "../app/media/") + dir[index];
@@ -41,7 +42,7 @@ app.whenReady().then(() => {
             getVideoDurationInSeconds(temp).then((duration) => {
               MyPlayer.add(new Media(temp, duration * 1000));
             });
-          } else MyPlayer.add(new Media(temp, 5000));
+          } else MyPlayer.add(new Media(temp, defaultDuration));
         }
       }
     });
@@ -96,7 +97,7 @@ service.post("/upload/:filename", function (req, res) {
       })
     }
     else
-      MyPlayer.add(new Media(filename, 5000));
+      MyPlayer.add(new Media(filename, defaultDuration));
     res.end(JSON.stringify(MyPlayer));
   });
 });
