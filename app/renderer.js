@@ -9,7 +9,7 @@ const { ipcRenderer, dialog } = electron;
 var fs = require('fs');
 var nodePath = require('path');
 let $ = require('jquery');
-var screen = { height: 360, width: 192}
+var screen = { height: 1080, width: 1920}
 
 // StartWatcher("media");
 
