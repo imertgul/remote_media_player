@@ -209,7 +209,7 @@ function Player() {
   this.play = false;
   this.loop = false;
   this.playingIndex = 0;
-  this.brightness = 10;
+  this.brightness = "10";
   this.screenSize = { height: 360, width: 192 };
   this.playList = [];
   this.add = function (object) {
