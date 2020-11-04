@@ -11,7 +11,7 @@ var express = require("express"),
 //***************************************************************//
 //***************************************************************//
 let mainWindow;
-let defaultDuration = 1000
+let defaultDuration = "1000"
 
 function createWindow() {
   mainWindow = new BrowserWindow({
