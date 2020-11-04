@@ -43,9 +43,9 @@ To use in same device please disable CORS. No need to set target ip(Default is l
 | /upload/:filename| data:selectedFile | res: Player |
 | /playFrom | index:integer | res: Player |
 | /brightness| brightness:int(0-10) | res: Player |
-| /deleteMedia| id:String | res: Player |
-| /updateList | playerName: string | res: Player |
-| /updateDuration |  id: String, duration: millisecondString  | res: Player |
+| /deleteMedia| id:string | res: Player |
+| /updateList | id: string, to: index(str) | res: Player |
+| /updateDuration |  id: String, duration: millisecond(str)  | res: Player |
 | /screenSize | width: int, height: int | res: Player |
 
 ## Objects
