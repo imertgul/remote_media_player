@@ -40,7 +40,7 @@ app.whenReady().then(() => {
           let temp = path.join(__dirname, "../app/media/") + dir[index];
           if (extension == "mp4" || extension == "mov") {
             getVideoDurationInSeconds(temp).then((duration) => {
-              MyPlayer.add(new Media(temp, duration * 1000));
+              MyPlayer.add(new Media(temp, (duration*1000).toString()));
             });
           } else MyPlayer.add(new Media(temp, defaultDuration));
         }
@@ -93,7 +93,7 @@ service.post("/upload/:filename", function (req, res) {
     if (extension == "mp4" || extension == "mov") {
       getVideoDurationInSeconds(filename).then((duration) => {
         console.log(duration)     
-        MyPlayer.add(new Media(filename, duration*1000));
+        MyPlayer.add(new Media(filename, (duration*1000).toString()));
       })
     }
     else
@@ -210,7 +210,7 @@ function Player() {
   this.loop = false;
   this.playingIndex = 0;
   this.brightness = "10";
-  this.screenSize = { height: 360, width: 192 };
+  this.screenSize = { height: 1080, width: 1920 };
   this.playList = [];
   this.add = function (object) {
     this.playList[this.count] = object;
