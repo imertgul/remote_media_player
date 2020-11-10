@@ -127,6 +127,11 @@ service.post("/loop", function (req, res) {
   console.log("Loop set: " + MyPlayer.loop);
   res.end(JSON.stringify(MyPlayer));
 });
+service.post("/stop", function (req, res) {
+  console.log("Player halted by: " + req.body.playerName);
+  MyPlayer.stop();
+  res.end(JSON.stringify(MyPlayer));
+});
 
 service.post("/init", function (req, res) {
   console.log("PlayerName: " + req.body.playerName);
@@ -229,7 +234,7 @@ function Player() {
   this.stop = function () {
     this.play = false;
     global.clearTimeout(timeOut);
-    console.log("Player Halted");
+    mainWindow.webContents.send("blank");
   };
 }
 

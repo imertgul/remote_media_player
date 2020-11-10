@@ -22,6 +22,13 @@ $("#initButton").on("click", (e) => {
   });
 });
 
+$("#stopButton").on("click", (e) => {
+  $.post(target + "/stop/", { playerName: "TestUi" }, function (data) {
+    console.log(data);
+    document.getElementById("label").innerHTML = data;
+  });
+});
+
 $("#playButton").on("click", (e) => {
   $.post(target + "/play/", { val: !play }, function (data) {
     document.getElementById("label").innerHTML = data;

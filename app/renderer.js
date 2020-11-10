@@ -53,6 +53,10 @@ ipcRenderer.on("file", function (event, data) {
   insertSlide(data);
 });
 
+ipcRenderer.on("blank", function (event, data) {
+  document.getElementById('mySlide').innerHTML = '';
+});
+
 ipcRenderer.on("brightness", function (event, data) {
   setBrightness(data);
 });
