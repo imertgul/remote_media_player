@@ -4,6 +4,7 @@ const fs = require("fs");
 var express = require("express"),
   path = require("path"),
   service = express();
+var busboy = require('connect-busboy');
 
 //***************************************************************//
 //***************************************************************//
@@ -72,33 +73,32 @@ service.listen(service.get("port"), function (err) {
   }
 });
 service.use(
-  express.urlencoded({
-    extend: false,
-  })
+  express.urlencoded(),
+  busboy()
 );
 service.use(express.json());
 
 service.post("/upload/:filename", function (req, res) {
-  var filename = path.basename(req.params.filename);
-  filename = path.resolve("app/media", filename.replace(/\s/g, ""));
-  var dst = fs.createWriteStream(filename);
-  req.pipe(dst);
-  dst.on("drain", function () {
-    console.log("Yukleniyor... ", new Date());
-    req.resume();
-  });
-  req.on("end", function () {
-    console.log("Tamamlandi... " + filename);
-    var extension = getFileExtension(filename);
-    if (extension == "mp4" || extension == "mov") {
-      getVideoDurationInSeconds(filename).then((duration) => {
-        console.log(duration)     
-        MyPlayer.add(new Media(filename, (duration*1000).toString()));
-      })
-    }
-    else
-      MyPlayer.add(new Media(filename, defaultDuration));
-    res.end(JSON.stringify(MyPlayer));
+  var fstream;
+  req.pipe(req.busboy);
+  req.busboy.on('file', function (fieldname, file, filename) {
+      console.log("Uploading: " + filename); 
+      filename = path.resolve("app/media", filename.replace(/\s/g, ""));
+      fstream = fs.createWriteStream(filename);
+      file.pipe(fstream);
+      fstream.on('close', function () {
+        console.log("Tamamlandi... " + filename);
+        var extension = getFileExtension(filename);
+        if (extension == "mp4" || extension == "mov") {
+          getVideoDurationInSeconds(filename).then((duration) => {
+            console.log(duration)     
+            MyPlayer.add(new Media(filename, (duration*1000).toString()));
+          })
+        }
+        else
+          MyPlayer.add(new Media(filename, defaultDuration));
+        res.end(JSON.stringify(MyPlayer));
+      });
   });
 });
 

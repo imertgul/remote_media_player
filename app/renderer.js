@@ -5,9 +5,7 @@
 // selectively enable features needed in the rendering
 // process.
 const electron = require("electron");
-const { ipcRenderer, dialog } = electron;
-var fs = require('fs');
-var nodePath = require('path');
+const { ipcRenderer } = electron;
 let $ = require('jquery');
 var screen = { height: 1080, width: 1920}
 
