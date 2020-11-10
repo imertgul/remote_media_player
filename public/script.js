@@ -86,14 +86,7 @@ $("#playFromButton").on("click", (e) => {
 
 $("#insertSlide").on("click", (e) => {
   const selectedFile = document.getElementById("media").files[0];
-
-  $.ajax({
-    type: "POST",
-    url: target + "/upload/" + selectedFile.name,
-    data: selectedFile,
-    processData: false,
-    contentType: false,
-  }).done(function (data) {
-    document.getElementById("label").innerHTML = data;
-  });
+  const formData = new FormData();
+  formData.append("file", selectedFile)
+  fetch(target + "/upload/" + selectedFile.name, {method: "POST", body: formData});
 });
