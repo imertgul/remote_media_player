@@ -139,15 +139,20 @@ service.post("/init", function (req, res) {
 });
 
 service.post("/deleteMedia", function (req, res) {
-  MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
-  MyPlayer.count--;
-  console.log("Deleted: " + req.body.id);
-  if (MyPlayer.play == true) {
-    MyPlayer.stop();
-    MyPlayer.play = true;
-    MyPlayer.start(mainWindow, 0);
-  }
-  res.end(JSON.stringify(MyPlayer));
+  var path = MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].fileName;
+  fs.unlink(path, (err) => {
+    if (err) throw err;
+    MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
+    MyPlayer.count--;
+    console.log("Deleted: " + req.body.id);
+    if (MyPlayer.play == true) {
+      MyPlayer.stop();
+      MyPlayer.play = true;
+      MyPlayer.start(mainWindow, 0);
+    }
+    res.end(JSON.stringify(MyPlayer));
+  });
+  
 });
 
 service.post("/updateDuration", function (req, res) {
@@ -166,9 +171,11 @@ service.post("/updateDuration", function (req, res) {
 service.post("/updateList", function (req, res) {
   if (req.body.to >= 0 && req.body.to < MyPlayer.playList.length) {
     console.log("Updated List for: " + req.body.id + " toIndex: " + req.body.to);
-    var temp = MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)];
+    var tempIndex = indexOfID(req.body.id, MyPlayer.playList);
+    var temp = MyPlayer.playList[tempIndex];
     MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
     MyPlayer.playList.splice(req.body.to, 0, temp);
+    // MyPlayer.playList.splice(tempIndex, 1);
     res.end(JSON.stringify(MyPlayer));
   }
   else
