@@ -12,7 +12,7 @@ var busboy = require("connect-busboy");
 //***************************************************************//
 //***************************************************************//
 let mainWindow;
-let defaultDuration = "1000"
+let defaultDuration = "5000";
 
 function createWindow() {
   mainWindow = new BrowserWindow({
