@@ -1,10 +1,10 @@
 const { app, BrowserWindow } = require("electron");
-const { getVideoDurationInSeconds } = require('get-video-duration');
+const { getVideoDurationInSeconds } = require("get-video-duration");
 const fs = require("fs");
 var express = require("express"),
   path = require("path"),
   service = express();
-var busboy = require('connect-busboy');
+var busboy = require("connect-busboy");
 
 //***************************************************************//
 //***************************************************************//
@@ -27,28 +27,31 @@ function createWindow() {
   //mainWindow.webContents.openDevTools();
 }
 
-app.whenReady().then(() => {
-  createWindow();
-}).then(() => {
-  mainWindow.webContents.on("did-finish-load", () => {
-    fs.readdir(path.join(__dirname, "../app/media"), function (err, dir) {
-      if (err) console.log(err);
-      else {
-        // mainWindow.webContents.send("files", dir);
-        console.log("Files found in local: " + dir);
-        for (let index = 0; index < dir.length; index++) {
-          var extension = getFileExtension(dir[index]);
-          let temp = path.join(__dirname, "../app/media/") + dir[index];
-          if (extension == "mp4" || extension == "mov") {
-            getVideoDurationInSeconds(temp).then((duration) => {
-              MyPlayer.add(new Media(temp, (duration*1000).toString()));
-            });
-          } else MyPlayer.add(new Media(temp, defaultDuration));
+app
+  .whenReady()
+  .then(() => {
+    createWindow();
+  })
+  .then(() => {
+    mainWindow.webContents.on("did-finish-load", () => {
+      fs.readdir(path.join(__dirname, "../app/media"), function (err, dir) {
+        if (err) console.log(err);
+        else {
+          // mainWindow.webContents.send("files", dir);
+          console.log("Files found in local: " + dir);
+          for (let index = 0; index < dir.length; index++) {
+            var extension = getFileExtension(dir[index]);
+            let temp = path.join(__dirname, "../app/media/") + dir[index];
+            if (extension == "mp4" || extension == "mov") {
+              getVideoDurationInSeconds(temp).then((duration) => {
+                MyPlayer.add(new Media(temp, (duration * 1000).toString()));
+              });
+            } else MyPlayer.add(new Media(temp, defaultDuration));
+          }
         }
-      }
+      });
     });
   });
-});
 
 //***************************************************************//
 //***************************************************************//
@@ -66,39 +69,39 @@ service.listen(service.get("port"), function (err) {
     console.log(err);
   } else {
     // console.log("Running on port: " + service.get("port"));
-    require('dns').lookup(require('os').hostname(), function (err, add, fam) {
-      console.log('Connect test UI: http://'+add+':'+service.get("port"));
-      console.log('Your target on Test UI must be: http://'+add+':'+service.get("port"));
-    })
+    require("dns").lookup(require("os").hostname(), function (err, add, fam) {
+      console.log("Connect test UI: http://" + add + ":" + service.get("port"));
+      console.log(
+        "Your target on Test UI must be: http://" +
+          add +
+          ":" +
+          service.get("port")
+      );
+    });
   }
 });
-service.use(
-  express.urlencoded(),
-  busboy()
-);
+service.use(express.urlencoded(), busboy());
 service.use(express.json());
 
 service.post("/upload/:filename", function (req, res) {
   var fstream;
   req.pipe(req.busboy);
-  req.busboy.on('file', function (fieldname, file, filename) {
-      console.log("Uploading: " + filename); 
-      filename = path.resolve("app/media", filename.replace(/\s/g, ""));
-      fstream = fs.createWriteStream(filename);
-      file.pipe(fstream);
-      fstream.on('close', function () {
-        console.log("Tamamlandi... " + filename);
-        var extension = getFileExtension(filename);
-        if (extension == "mp4" || extension == "mov") {
-          getVideoDurationInSeconds(filename).then((duration) => {
-            console.log(duration)     
-            MyPlayer.add(new Media(filename, (duration*1000).toString()));
-          })
-        }
-        else
-          MyPlayer.add(new Media(filename, defaultDuration));
-        res.end(JSON.stringify(MyPlayer));
-      });
+  req.busboy.on("file", function (fieldname, file, filename) {
+    console.log("Uploading: " + filename);
+    filename = path.resolve("app/media", filename.replace(/\s/g, ""));
+    fstream = fs.createWriteStream(filename);
+    file.pipe(fstream);
+    fstream.on("close", function () {
+      console.log("Tamamlandi... " + filename);
+      var extension = getFileExtension(filename);
+      if (extension == "mp4" || extension == "mov") {
+        getVideoDurationInSeconds(filename).then((duration) => {
+          console.log(duration);
+          MyPlayer.add(new Media(filename, (duration * 1000).toString()));
+        });
+      } else MyPlayer.add(new Media(filename, defaultDuration));
+      res.end(JSON.stringify(MyPlayer));
+    });
   });
 });
 
@@ -139,7 +142,8 @@ service.post("/init", function (req, res) {
 });
 
 service.post("/deleteMedia", function (req, res) {
-  var path = MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].fileName;
+  var path =
+    MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].fileName;
   fs.unlink(path, (err) => {
     if (err) throw err;
     MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
@@ -152,34 +156,31 @@ service.post("/deleteMedia", function (req, res) {
     }
     res.end(JSON.stringify(MyPlayer));
   });
-  
 });
 
 service.post("/updateDuration", function (req, res) {
-  if (req.body.duration >0) {
+  if (req.body.duration > 0) {
     console.log(
       "Updated duration: " + req.body.duration + " for: " + req.body.id
     );
     MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].duration =
       req.body.duration;
     res.end(JSON.stringify(MyPlayer));
-  }
-  else
-    res.sendStatus(400);
+  } else res.sendStatus(400);
 });
 
 service.post("/updateList", function (req, res) {
   if (req.body.to >= 0 && req.body.to < MyPlayer.playList.length) {
-    console.log("Updated List for: " + req.body.id + " toIndex: " + req.body.to);
+    console.log(
+      "Updated List for: " + req.body.id + " toIndex: " + req.body.to
+    );
     var tempIndex = indexOfID(req.body.id, MyPlayer.playList);
     var temp = MyPlayer.playList[tempIndex];
     MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
     MyPlayer.playList.splice(req.body.to, 0, temp);
     // MyPlayer.playList.splice(tempIndex, 1);
     res.end(JSON.stringify(MyPlayer));
-  }
-  else
-    res.sendStatus(400);
+  } else res.sendStatus(400);
 });
 
 service.post("/playFrom", function (req, res) {
@@ -189,9 +190,7 @@ service.post("/playFrom", function (req, res) {
     MyPlayer.start(mainWindow, req.body.index);
     res.end(JSON.stringify(MyPlayer));
     console.log("Player starts from: " + req.body.index);
-  }
-  else
-    res.sendStatus(400);
+  } else res.sendStatus(400);
 });
 
 service.post("/screenSize", function (req, res) {
@@ -231,11 +230,30 @@ function Player() {
   this.start = function (mainWindow, from) {
     if (!this.play) return 0;
     this.playingIndex = from;
-    console.log("index: " + this.playingIndex + " Count: " + this.count + " Loop: " + this.loop + " Play: " + this.play);
-    if (this.playingIndex < this.count) this.playList[this.playingIndex].play(mainWindow);
-    if (this.loop && this.playingIndex == this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, 0), this.playList[this.playingIndex].duration);
-    else if (!this.loop && this.playingIndex == this.count - 1) this.play = false;
-    else if (this.play && this.playingIndex < this.count - 1) timeOut = setTimeout(() => this.start(mainWindow, ++this.playingIndex),this.playList[this.playingIndex].duration);
+    console.log(
+      "index: " +
+        this.playingIndex +
+        " Count: " +
+        this.count +
+        " Loop: " +
+        this.loop +
+        " Play: " +
+        this.play
+    );
+    if (this.playingIndex < this.count)
+      this.playList[this.playingIndex].play(mainWindow);
+    if (this.loop && this.playingIndex == this.count - 1)
+      timeOut = setTimeout(
+        () => this.start(mainWindow, 0),
+        this.playList[this.playingIndex].duration
+      );
+    else if (!this.loop && this.playingIndex == this.count - 1)
+      this.play = false;
+    else if (this.play && this.playingIndex < this.count - 1)
+      timeOut = setTimeout(
+        () => this.start(mainWindow, ++this.playingIndex),
+        this.playList[this.playingIndex].duration
+      );
     return 0;
   };
   this.stop = function () {
