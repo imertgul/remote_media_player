@@ -48,6 +48,7 @@ app
               });
             } else MyPlayer.add(new Media(temp, defaultDuration));
           }
+          play();
         }
       });
     });
@@ -116,11 +117,7 @@ service.post("/brightness", function (req, res) {
 
 service.post("/play", function (req, res) {
   //Warning, res.body.val just a toggle signal
-  MyPlayer.play = !MyPlayer.play;
-  console.log("Play set: " + MyPlayer.play);
-  if (MyPlayer.play) {
-    MyPlayer.start(mainWindow, 0);
-  }
+  play();
   res.end(JSON.stringify(MyPlayer));
 });
 
@@ -280,4 +277,12 @@ function arrayRemove(arr, value) {
 
 function getFileExtension(filename) {
   return filename.split(".").pop();
+}
+
+function play() {
+  MyPlayer.play = !MyPlayer.play;
+  console.log("Play set: " + MyPlayer.play);
+  if (MyPlayer.play) {
+    MyPlayer.start(mainWindow, 0);
+  }
 }
