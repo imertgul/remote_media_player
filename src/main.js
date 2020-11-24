@@ -63,6 +63,11 @@ app
 let MyPlayer = new Player();
 var timeOut;
 
+process.on("uncaughtException", function (value) {
+  console.log(value);
+  app.quit();
+});
+
 service.set("port", process.env.PORT || 3000);
 service.use(express.static("public"));
 service.listen(service.get("port"), function (err) {
