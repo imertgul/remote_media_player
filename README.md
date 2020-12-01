@@ -2,14 +2,14 @@
 
 Remote Media/Content Player that can be controlled over the network. Electron app displays the media. You can communicate with API as shown below or use Test UI that will be run automatically.
 
-Project includes three directory. 
+Project includes three directory.
 
- - src
-	 - node.js app that runs the API's, Electron app and Test UI for control the media
- - app
-	 - Files of Electron app.
- - public
-	 - Files of Test UI
+- src
+  - node.js app that runs the API's, Electron app and Test UI for control the media
+- app
+  - Files of Electron app.
+- public
+  - Files of Test UI
 
 ## To Use
 
@@ -25,28 +25,30 @@ npm install
 # Run the app
 npm start
 ```
-There will be an output  in console:
 
-      Connect test UI: http://192.168.88.33:3000
-      Your target on Test UI must be: http://192.168.88.33:3000
+There will be an output in console:
+
+      Connect test UI: http://192.168.88.33:4631
+      Your target on Test UI must be: http://192.168.88.33:4631
 
 You should be in same network to use test UI. Also You have to set target ip as noted.
 To use in same device please disable CORS. No need to set target ip(Default is localhost already).
 
 ## Refererenses
 
-| POST| Request | Response  |
-|--|--|--|
-| /init | playerName: string | res: Player |
-| /play| val:boolean | res: Player |
-| /loop| val:boolean | res: Player |
-| /upload/:filename| data:selectedFile | res: Player |
-| /playFrom | index:integer | res: Player |
-| /brightness| brightness:int(0-10) | res: Player |
-| /deleteMedia| id:string | res: Player |
-| /updateList | id: string, to: index(str) | res: Player |
-| /updateDuration |  id: String, duration: millisecond(str)  | res: Player |
-| /screenSize | width: int, height: int | res: Player |
+| POST              | Request                                | Response    |
+| ----------------- | -------------------------------------- | ----------- |
+| /init             | playerName: string                     | res: Player |
+| /stop             | playerName: string                     | res: Player |
+| /play             | val:boolean                            | res: Player |
+| /loop             | val:boolean                            | res: Player |
+| /upload/:filename | data:selectedFile                      | res: Player |
+| /playFrom         | index:integer                          | res: Player |
+| /brightness       | brightness:int(0-10)                   | res: Player |
+| /deleteMedia      | id:string                              | res: Player |
+| /updateList       | id: string, to: index(str)             | res: Player |
+| /updateDuration   | id: String, duration: millisecond(str) | res: Player |
+| /screenSize       | width: int, height: int                | res: Player |
 
 ## Objects
 
@@ -90,5 +92,3 @@ To use in same device please disable CORS. No need to set target ip(Default is l
         console.log("Player Halted");
       };
     }
-
-

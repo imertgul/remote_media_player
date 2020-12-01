@@ -68,7 +68,7 @@ process.on("uncaughtException", function (value) {
   app.quit();
 });
 
-service.set("port", process.env.PORT || 3000);
+service.set("port", process.env.PORT || 4631);
 service.use(express.static("public"));
 service.listen(service.get("port"), function (err) {
   if (err) {

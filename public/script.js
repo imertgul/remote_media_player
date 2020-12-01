@@ -1,5 +1,5 @@
-//var target = "http://192.168.88.33:3000";
-var target = "http://127.0.0.1:3000";
+//var target = "http://192.168.88.33:4631";
+var target = "http://127.0.0.1:4631";
 
 $("#setIpButton").on("click", () => {
   target = $("#ipID").val();
@@ -34,7 +34,7 @@ $("#playButton").on("click", (e) => {
     document.getElementById("label").innerHTML = data;
     data = JSON.parse(data);
     play = data.play;
-    console.log("Play set "+ play);
+    console.log("Play set " + play);
   });
 });
 
@@ -43,7 +43,7 @@ $("#loopButton").on("click", (e) => {
     document.getElementById("label").innerHTML = data;
     data = JSON.parse(data);
     loop = data.loop;
-    console.log("Loop set "+ play);
+    console.log("Loop set " + play);
   });
 });
 
@@ -58,11 +58,13 @@ $("#sizeButton").on("click", (e) => {
 });
 
 $("#deleteButton").on("click", (e) => {
-  $.post(target + "/deleteMedia/", { id: $("#mediaID").val() }, function (
-    data
-  ) {
-    document.getElementById("label").innerHTML = data;
-  });
+  $.post(
+    target + "/deleteMedia/",
+    { id: $("#mediaID").val() },
+    function (data) {
+      document.getElementById("label").innerHTML = data;
+    }
+  );
 });
 
 $("#updateDurationButton").on("click", (e) => {
@@ -94,6 +96,9 @@ $("#playFromButton").on("click", (e) => {
 $("#insertSlide").on("click", (e) => {
   const selectedFile = document.getElementById("media").files[0];
   const formData = new FormData();
-  formData.append("file", selectedFile)
-  fetch(target + "/upload/" + selectedFile.name, {method: "POST", body: formData});
+  formData.append("file", selectedFile);
+  fetch(target + "/upload/" + selectedFile.name, {
+    method: "POST",
+    body: formData,
+  });
 });
