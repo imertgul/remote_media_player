@@ -42,19 +42,17 @@ var readFiles = function () {
   fs.readdir(path.join(__dirname, "../app/media"), function (err, dir) {
     if (err) console.log(err);
     else {
-      // resetPlayer();
       console.log("Files found in local: " + dir);
       for (let index = 0; index < dir.length; index++) {
         var extension = getFileExtension(dir[index]);
         let temp = path.join(__dirname, "../app/media/") + dir[index];
-
         if (extension == "mp4" || extension == "mov") {
           getVideoDurationInSeconds(temp).then((duration) => {
             MyPlayer.add(new Media(temp, (duration * 1000).toString()));
           });
         } else MyPlayer.add(new Media(temp, defaultDuration));
       }
-      MyPlayer.loop = !MyPlayer.loop;
+      MyPlayer.loop = true;
       play();
     }
   });
@@ -322,6 +320,6 @@ function resetPlayer() {
 function isExist(fileName) {
   for (let index = 0; index < MyPlayer.playList.length; index++) {
     if (fileName == MyPlayer.playList[index].fileName) return true;
-    else return false;
   }
+  return false;
 }
