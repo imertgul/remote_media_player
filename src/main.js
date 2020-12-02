@@ -149,16 +149,18 @@ service.post("/init", function (req, res) {
 });
 
 service.post("/readFile", function (req, res) {
-  console.log(
-    "ReadFile: " + req.body.fileName + " Duration: " + req.body.duration
-  );
-  let temp = path.join(__dirname, "../app/media/") + req.body.fileName;
-  var extension = getFileExtension(req.body.fileName);
-  if (extension == "mp4" || extension == "mov") {
-    getVideoDurationInSeconds(temp).then((duration) => {
-      MyPlayer.add(new Media(temp, (duration * 1000).toString()));
-    });
-  } else MyPlayer.add(new Media(temp, req.body.duration));
+  if (isExist(req.body.fileName)) {
+    console.log("media already installed");
+  } else {
+    console.log("ReadFile: " + req.body.fileName);
+    let temp = path.join(__dirname, "../app/media/") + req.body.fileName;
+    var extension = getFileExtension(req.body.fileName);
+    if (extension == "mp4" || extension == "mov") {
+      getVideoDurationInSeconds(temp).then((duration) => {
+        MyPlayer.add(new Media(temp, (duration * 1000).toString()));
+      });
+    } else MyPlayer.add(new Media(temp, req.body.duration));
+  }
   res.end(JSON.stringify(MyPlayer));
 });
 
@@ -315,4 +317,11 @@ function resetPlayer() {
   MyPlayer.stop();
   MyPlayer.playList = [];
   MyPlayer.count = 0;
+}
+
+function isExist(fileName) {
+  for (let index = 0; index < MyPlayer.playList.length; index++) {
+    if (fileName == MyPlayer.playList[index].fileName) return true;
+    else return false;
+  }
 }
