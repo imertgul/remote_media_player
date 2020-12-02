@@ -147,6 +147,20 @@ service.post("/init", function (req, res) {
   res.end(JSON.stringify(MyPlayer));
 });
 
+service.post("/readFile", function (req, res) {
+  console.log(
+    "ReadFile: " + req.body.fileName + " Duration: " + req.body.duration
+  );
+  let temp = path.join(__dirname, "../app/media/") + req.body.fileName;
+  var extension = getFileExtension(req.body.fileName);
+  if (extension == "mp4" || extension == "mov") {
+    getVideoDurationInSeconds(temp).then((duration) => {
+      MyPlayer.add(new Media(temp, (duration * 1000).toString()));
+    });
+  } else MyPlayer.add(new Media(temp, req.body.duration));
+  res.end(JSON.stringify(MyPlayer));
+});
+
 service.post("/deleteMedia", function (req, res) {
   var path =
     MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].fileName;
