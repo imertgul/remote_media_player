@@ -34,26 +34,30 @@ app
   })
   .then(() => {
     mainWindow.webContents.on("did-finish-load", () => {
-      fs.readdir(path.join(__dirname, "../app/media"), function (err, dir) {
-        if (err) console.log(err);
-        else {
-          // mainWindow.webContents.send("files", dir);
-          console.log("Files found in local: " + dir);
-          for (let index = 0; index < dir.length; index++) {
-            var extension = getFileExtension(dir[index]);
-            let temp = path.join(__dirname, "../app/media/") + dir[index];
-            if (extension == "mp4" || extension == "mov") {
-              getVideoDurationInSeconds(temp).then((duration) => {
-                MyPlayer.add(new Media(temp, (duration * 1000).toString()));
-              });
-            } else MyPlayer.add(new Media(temp, defaultDuration));
-          }
-          play();
-        }
-      });
+      readFiles();
     });
   });
 
+var readFiles = function () {
+  fs.readdir(path.join(__dirname, "../app/media"), function (err, dir) {
+    if (err) console.log(err);
+    else {
+      // resetPlayer();
+      console.log("Files found in local: " + dir);
+      for (let index = 0; index < dir.length; index++) {
+        var extension = getFileExtension(dir[index]);
+        let temp = path.join(__dirname, "../app/media/") + dir[index];
+
+        if (extension == "mp4" || extension == "mov") {
+          getVideoDurationInSeconds(temp).then((duration) => {
+            MyPlayer.add(new Media(temp, (duration * 1000).toString()));
+          });
+        } else MyPlayer.add(new Media(temp, defaultDuration));
+      }
+      play();
+    }
+  });
+};
 //***************************************************************//
 //***************************************************************//
 //***********************   SERVICES  ***************************//
@@ -290,4 +294,10 @@ function play() {
   if (MyPlayer.play) {
     MyPlayer.start(mainWindow, 0);
   }
+}
+
+function resetPlayer() {
+  MyPlayer.stop();
+  MyPlayer.playList = [];
+  MyPlayer.count = 0;
 }
