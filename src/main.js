@@ -54,6 +54,7 @@ var readFiles = function () {
           });
         } else MyPlayer.add(new Media(temp, defaultDuration));
       }
+      MyPlayer.loop = !MyPlayer.loop;
       play();
     }
   });
