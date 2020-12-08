@@ -35,6 +35,7 @@ app
   .then(() => {
     mainWindow.webContents.on("did-finish-load", () => {
       readFiles();
+      mainWindow.webContents.send("brightness", MyPlayer.brightness);
     });
   });
 
@@ -241,7 +242,7 @@ function Player() {
   this.play = false;
   this.loop = false;
   this.playingIndex = 0;
-  this.brightness = "10";
+  this.brightness = "6";
   this.screenSize = { height: 1080, width: 1920 };
   this.playList = [];
   this.add = function (object) {
