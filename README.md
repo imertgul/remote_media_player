@@ -40,9 +40,11 @@ To use in same device please disable CORS. No need to set target ip(Default is l
 | ----------------- | -------------------------------------- | ----------- |
 | /init             | playerName: string                     | res: Player |
 | /stop             | playerName: string                     | res: Player |
+| /reset            | playerName: string                     | res: Player |
 | /play             | val:boolean                            | res: Player |
 | /loop             | val:boolean                            | res: Player |
 | /upload/:filename | data:selectedFile                      | res: Player |
+| /readFile         | fileName:string , duration: string     | res: Player |
 | /playFrom         | index:integer                          | res: Player |
 | /brightness       | brightness:int(0-10)                   | res: Player |
 | /deleteMedia      | id:string                              | res: Player |
