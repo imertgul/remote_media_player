@@ -147,6 +147,12 @@ service.post("/init", function (req, res) {
   res.end(JSON.stringify(MyPlayer));
 });
 
+service.post("/reset", function (req, res) {
+  console.log("PlayerName: " + req.body.playerName);
+  resetPlayer(); //need test
+  res.end(JSON.stringify(MyPlayer));
+});
+
 service.post("/readFile", function (req, res) {
   if (isExist(req.body.fileName)) {
     console.log("media already installed");
