@@ -148,8 +148,8 @@ service.post("/init", function (req, res) {
 });
 
 service.post("/reset", function (req, res) {
-  console.log("PlayerName: " + req.body.playerName);
-  resetPlayer(); //need test
+  console.log("Reset from PlayerName: " + req.body.playerName);
+  resetPlayer();
   res.end(JSON.stringify(MyPlayer));
 });
 
