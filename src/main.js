@@ -326,7 +326,7 @@ function resetPlayer() {
 
 function isExist(fileName) {
   for (let index = 0; index < MyPlayer.playList.length; index++) {
-    if (fileName == MyPlayer.playList[index].fileName.split("/").pop())
+    if (fileName == path.basename(MyPlayer.playList[index].fileName))
       return true;
   }
   return false;
