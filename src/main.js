@@ -81,12 +81,7 @@ service.listen(service.get("port"), function (err) {
     // console.log("Running on port: " + service.get("port"));
     require("dns").lookup(require("os").hostname(), function (err, add, fam) {
       console.log("Connect test UI: http://" + add + ":" + service.get("port"));
-      console.log(
-        "Your target on Test UI must be: http://" +
-          add +
-          ":" +
-          service.get("port")
-      );
+      console.log("Your target on Test UI must be: http://" + add + ":" + service.get("port"));
     });
   }
 });
@@ -170,8 +165,7 @@ service.post("/readFile", function (req, res) {
 });
 
 service.post("/deleteMedia", function (req, res) {
-  var path =
-    MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].fileName;
+  var path = MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].fileName;
   fs.unlink(path, (err) => {
     if (err) throw err;
     MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
@@ -188,20 +182,15 @@ service.post("/deleteMedia", function (req, res) {
 
 service.post("/updateDuration", function (req, res) {
   if (req.body.duration > 0) {
-    console.log(
-      "Updated duration: " + req.body.duration + " for: " + req.body.id
-    );
-    MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].duration =
-      req.body.duration;
+    console.log("Updated duration: " + req.body.duration + " for: " + req.body.id);
+    MyPlayer.playList[indexOfID(req.body.id, MyPlayer.playList)].duration = req.body.duration;
     res.end(JSON.stringify(MyPlayer));
   } else res.sendStatus(400);
 });
 
 service.post("/updateList", function (req, res) {
   if (req.body.to >= 0 && req.body.to < MyPlayer.playList.length) {
-    console.log(
-      "Updated List for: " + req.body.id + " toIndex: " + req.body.to
-    );
+    console.log("Updated List for: " + req.body.id + " toIndex: " + req.body.to);
     var tempIndex = indexOfID(req.body.id, MyPlayer.playList);
     var temp = MyPlayer.playList[tempIndex];
     MyPlayer.playList = arrayRemove(MyPlayer.playList, req.body.id);
@@ -258,30 +247,13 @@ function Player() {
   this.start = function (mainWindow, from) {
     if (!this.play) return 0;
     this.playingIndex = from;
-    console.log(
-      "index: " +
-        this.playingIndex +
-        " Count: " +
-        this.count +
-        " Loop: " +
-        this.loop +
-        " Play: " +
-        this.play
-    );
-    if (this.playingIndex < this.count)
-      this.playList[this.playingIndex].play(mainWindow);
+    console.log("index: " + this.playingIndex + " Count: " + this.count + " Loop: " + this.loop + " Play: " + this.play);
+    if (this.playingIndex < this.count) this.playList[this.playingIndex].play(mainWindow);
     if (this.loop && this.playingIndex == this.count - 1)
-      timeOut = setTimeout(
-        () => this.start(mainWindow, 0),
-        this.playList[this.playingIndex].duration
-      );
-    else if (!this.loop && this.playingIndex == this.count - 1)
-      this.play = false;
+      timeOut = setTimeout(() => this.start(mainWindow, 0), this.playList[this.playingIndex].duration);
+    else if (!this.loop && this.playingIndex == this.count - 1) this.play = false;
     else if (this.play && this.playingIndex < this.count - 1)
-      timeOut = setTimeout(
-        () => this.start(mainWindow, ++this.playingIndex),
-        this.playList[this.playingIndex].duration
-      );
+      timeOut = setTimeout(() => this.start(mainWindow, ++this.playingIndex), this.playList[this.playingIndex].duration);
     return 0;
   };
   this.stop = function () {
@@ -326,8 +298,7 @@ function resetPlayer() {
 
 function isExist(fileName) {
   for (let index = 0; index < MyPlayer.playList.length; index++) {
-    if (fileName == path.basename(MyPlayer.playList[index].fileName))
-      return true;
+    if (fileName == path.basename(MyPlayer.playList[index].fileName)) return true;
   }
   return false;
 }
