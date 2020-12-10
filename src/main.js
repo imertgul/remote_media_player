@@ -51,6 +51,8 @@ var readFiles = function () {
           getVideoDurationInSeconds(temp).then((duration) => {
             MyPlayer.add(new Media(temp, (duration * 1000).toString()));
           });
+        } else if (extension == "gitignore") {
+          console.log("git ignored");
         } else MyPlayer.add(new Media(temp, defaultDuration));
       }
       MyPlayer.loop = true;
