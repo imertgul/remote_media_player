@@ -240,7 +240,7 @@ function Player() {
   this.loop = false;
   this.playingIndex = 0;
   this.brightness = "6";
-  this.screenSize = { height: 1080, width: 1920 };
+  this.screenSize = { height: 384, width: 192 };
   this.playList = [];
   this.add = function (object) {
     this.playList[this.count] = object;
