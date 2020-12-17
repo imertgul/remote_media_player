@@ -47,7 +47,7 @@ var readFiles = function () {
       for (let index = 0; index < dir.length; index++) {
         var extension = getFileExtension(dir[index]);
         let temp = path.join(__dirname, "../app/media/") + dir[index];
-        if (extension == "mp4" || extension == "mov") {
+        if (extension == "mp4" || extension == "mov" || extension == "MOV") {
           getVideoDurationInSeconds(temp).then((duration) => {
             MyPlayer.add(new Media(temp, (duration * 1000).toString()));
           });
@@ -101,7 +101,7 @@ service.post("/upload/:filename", function (req, res) {
     fstream.on("close", function () {
       console.log("Tamamlandi... " + filename);
       var extension = getFileExtension(filename);
-      if (extension == "mp4" || extension == "mov") {
+      if (extension == "mp4" || extension == "mov" || extension == "MOV") {
         getVideoDurationInSeconds(filename).then((duration) => {
           console.log(duration);
           MyPlayer.add(new Media(filename, (duration * 1000).toString()));
@@ -157,7 +157,7 @@ service.post("/readFile", function (req, res) {
     console.log("ReadFile: " + req.body.fileName);
     let temp = path.join(__dirname, "../app/media/") + req.body.fileName;
     var extension = getFileExtension(req.body.fileName);
-    if (extension == "mp4" || extension == "mov") {
+    if (extension == "mp4" || extension == "mov" || extension == "MOV") {
       getVideoDurationInSeconds(temp).then((duration) => {
         MyPlayer.add(new Media(temp, (duration * 1000).toString()));
       });

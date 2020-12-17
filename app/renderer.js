@@ -25,7 +25,7 @@ function insertSlide(data) {
         data +
         ' type="video/mp4" /></video>'
     );
-  } else if (extension == "mov") {
+  } else if (extension == "mov" || extension == "MOV") {
     $("#mySlide").prepend(
       '<video class="mySlides" style="display: none" width=' + screen.width + " height=" + screen.height + " src=" + data + " autoplay loop></video>"
     );
