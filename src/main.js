@@ -40,7 +40,7 @@ app
   });
 
 var readFiles = function () {
-  fs.readdir(path.join(__dirname, "../app/media"), function (err, dir) {
+  fs.readdir(path.join(__dirname, "../app/media"), async function (err, dir) {
     if (err) console.log(err);
     else {
       console.log("Files found in local: " + dir);
@@ -48,9 +48,8 @@ var readFiles = function () {
         var extension = getFileExtension(dir[index]);
         let temp = path.join(__dirname, "../app/media/") + dir[index];
         if (extension == "mp4" || extension == "mov" || extension == "MOV") {
-          getVideoDurationInSeconds(temp).then((duration) => {
-            MyPlayer.add(new Media(temp, (duration * 1000).toString()));
-          });
+          const duration = await getVideoDurationInSeconds(temp);
+          MyPlayer.add(new Media(temp, (duration * 1000).toString()));
         } else if (extension == "gitignore") {
           console.log("git ignored");
         } else MyPlayer.add(new Media(temp, defaultDuration));
